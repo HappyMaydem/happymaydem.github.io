@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Anime - Happy Maydem</title>
+  <link rel="icon" href="Logo-_1_.ico" type="image/x-icon">
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive;
+      margin: 0;
+      background-color: #f3f5ff;
+    }
+
+    .container {
+      display: flex;
+    }
+
+    .sidebar {
+      width: 220px;
+      background-color: #d7e3fc;
+      padding: 20px;
+      border-right: 2px dashed #90caf9;
+      height: 100vh;
+    }
+
+    .sidebar h3 {
+      margin-top: 0;
+      color: #1565c0;
+    }
+
+    .sidebar label {
+      display: block;
+      margin: 5px 0;
+    }
+
+    .products {
+      flex: 1;
+      padding: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .product {
+      width: 180px;
+      padding: 10px;
+      background-color: white;
+      text-align: center;
+      border-radius: 8px;
+      border: 2px dashed #90caf9;
+      position: relative;
+    }
+
+    .product img {
+      width: 100%;
+      border-radius: 6px;
+    }
+
+    .agotado::after {
+      content: "AGOTADO";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(0,0,0,0.6);
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      padding: 5px 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="sidebar">
+    <h3>ANIME</h3>
+    <strong>Filtrar</strong><br><br>
+    <p><strong>Series</strong></p>
+    <label><input type="checkbox"> Naruto</label>
+    <label><input type="checkbox"> Ghibli</label>
+    <label><input type="checkbox"> Sailor Moon</label>
+    <label><input type="checkbox"> Demon Slayer</label>
+
+    <p><strong>Tipo</strong></p>
+    <label><input type="checkbox"> Llaveros</label>
+    <label><input type="checkbox"> Stickers</label>
+    <label><input type="checkbox"> Posters</label>
+    <label><input type="checkbox"> Tarjetas</label>
+  </div>
+
+  <div class="products">
+    <div class="product">
+      <img src="https://via.placeholder.com/200x150" alt="Sticker Naruto">
+      <p>Sticker Naruto</p>
+      <strong>$1.000</strong>
+    </div>
+
+    <div class="product">
+      <img src="https://via.placeholder.com/200x150/d7e3fc" alt="Llavero Totoro">
+      <p>Llavero Totoro</p>
+      <strong>$2.500</strong>
+    </div>
+
+    <div class="product agotado">
+      <img src="https://via.placeholder.com/200x150/cccccc" alt="Tarjeta Demon Slayer">
+      <p>Tarjeta Demon Slayer</p>
+      <strong>$1.800</strong>
+    </div>
+
+    <div class="product">
+      <img src="https://via.placeholder.com/200x150/e3f2fd" alt="Mini Poster Sailor Moon">
+      <p>Mini Poster Sailor Moon</p>
+      <strong>$3.000</strong>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
