@@ -6,77 +6,151 @@
   <link rel="icon" href="Logo-_1_.ico" type="image/x-icon">
   <style>
     body {
-      font-family: "Comic Sans MS", sans-serif;
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
       background-color: #ffe6f0;
+    }
+
+    /* Aviso superior */
+    .top-bar {
+      background-color: #5a479e;
+      color: white;
       text-align: center;
+      padding: 8px;
+      font-size: 14px;
     }
-    header img {
-      width: 150px;
-      margin-top: 10px;
-    }
-    .producto {
-      border: 2px dashed pink;
-      margin: 10px;
-      padding: 10px;
-      display: inline-block;
-      width: 200px;
+
+    /* Encabezado con logo y redes */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
       background-color: white;
     }
-    img {
-      width: 100%;
+
+    .logo img {
+      height: 60px;
     }
-    a {
-      display: inline-block;
-      margin-top: 5px;
-      background: pink;
+
+    .social-icons img {
+      width: 24px;
+      margin-left: 10px;
+    }
+
+    /* Menú rosa */
+    .nav {
+      background-color: #fdaecb;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    .nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+    }
+
+    /* Buscador */
+    .search-bar {
+      position: absolute;
+      right: 40px;
+      top: 95px;
+    }
+
+    .search-bar input {
       padding: 5px 10px;
-      color: black;
+      border-radius: 20px;
+      border: 2px solid #fdaecb;
+      outline: none;
+    }
+
+    /* Productos */
+    .productos {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    .producto {
+      background-color: white;
+      border: 2px dashed pink;
+      border-radius: 10px;
+      width: 200px;
+      margin: 10px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .producto img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .producto a {
+      display: inline-block;
+      margin-top: 10px;
+      background: pink;
+      padding: 6px 12px;
       border-radius: 5px;
+      color: black;
       text-decoration: none;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <img src="Logo-_1_.ico" alt="Logo Happy Maydem">
-    <h1>🌸 Happy Maydem 🌸</h1>
-    <p>¡De Fan para Fans!</p>
-  </header>
-
-  <div class="producto">
-    <img src="https://via.placeholder.com/200" alt="Producto 1">
-    <h3>Stickers</h3>
-    <p>$1.000</p>
-    <a href="https://wa.me/56TU_NUMERO" target="_blank">Comprar</a>
+  <div class="top-bar">
+    📦 Aprovecha los envíos gratis por compras sobre $30.000 en Stgo
   </div>
 
-  <div class="producto">
-    <img src="https://via.placeholder.com/200" alt="Producto 2">
-    <h3>Porta Credencial</h3>
-    <p>$2.000</p>
-    <a href="https://wa.me/56TU_NUMERO" target="_blank">Comprar</a>
-  </div>
-  <div class="producto">
-      <img src="https://via.placeholder.com/200" alt="Producto 2">
-      <h3>Taza</h3>
-      <p>$3.000  2 x $5.000</p>
-      <a href="https://wa.me/56TU_NUMERO" target="_blank">Comprar</a>
+  <div class="header">
+    <div class="logo">
+      <img src="Logo-_1_.ico" alt="Happy Maydem">
     </div>
-  <div class="producto">
-    <img src="https://via.placeholder.com/200" alt="Producto 3">
-    <h3>Llavero Stray Kids</h3>
-    <p>$1.000</p>
-    <a href="https://wa.me/56TU_NUMERO" target="_blank">Comprar</a>
+    <div class="social-icons">
+      <a href="#"><img src="https://img.icons8.com/color/48/instagram-new.png" alt="Instagram"></a>
+      <a href="#"><img src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook"></a>
+    </div>
   </div>
 
-  <div class="producto">
-    <img src="https://via.placeholder.com/200" alt="Producto 4">
-    <h3>Tarjeta Cha Eun Woo</h3>
-    <p>$500 c/u 3 por $1.000</p>
-    <a href="https://wa.me/569_95733148" target="_blank">Comprar</a>
+  <div class="nav">
+    <a href="#">INICIO</a>
+    <a href="#">VER TODO</a>
+    <a href="#">PAPELERÍA</a>
+    <a href="#">PELUCHE</a>
+    <a href="#">ACCESORIOS</a>
+    <a href="#">ANIME</a>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" placeholder="¿Qué quieres buscar?">
+  </div>
+
+  <div class="productos">
+    <div class="producto">
+      <img src="https://via.placeholder.com/200" alt="Producto 1">
+      <h3>Stickers BTS</h3>
+      <p>$1.000</p>
+      <a href="#">Comprar</a>
+    </div>
+
+    <div class="producto">
+      <img src="https://via.placeholder.com/200" alt="Producto 2">
+      <h3>Tarjeta Kpop</h3>
+      <p>$2.000</p>
+      <a href="#">Comprar</a>
+    </div>
+
+    <div class="producto">
+      <img src="https://via.placeholder.com/200" alt="Producto 3">
+      <h3>Llavero Anime</h3>
+      <p>$2.500</p>
+      <a href="#">Comprar</a>
+    </div>
   </div>
 
 </body>
 </html>
->
