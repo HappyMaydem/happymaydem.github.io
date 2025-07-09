@@ -1,1 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Papelería - Happy Maydem</title>
+  <link rel="icon" href="Logo-_1_.ico" type="image/x-icon">
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive;
+      margin: 0;
+      background-color: #fff5fa;
+    }
+
+    .container {
+      display: flex;
+    }
+
+    .sidebar {
+      width: 220px;
+      background-color: #f3e5f5;
+      padding: 20px;
+      border-right: 2px dashed pink;
+      height: 100vh;
+    }
+
+    .sidebar h3 {
+      margin-top: 0;
+      color: #824ba6;
+    }
+
+    .sidebar label {
+      display: block;
+      margin: 5px 0;
+    }
+
+    .products {
+      flex: 1;
+      padding: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .product {
+      width: 180px;
+      padding: 10px;
+      background-color: white;
+      text-align: center;
+      border-radius: 8px;
+      border: 2px dashed pink;
+      position: relative;
+    }
+
+    .product img {
+      width: 100%;
+      border-radius: 6px;
+    }
+
+    .agotado::after {
+      content: "AGOTADO";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(0,0,0,0.6);
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      padding: 5px 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="sidebar">
+    <h3>LIBRERÍA</h3>
+    <strong>Filtrar</strong><br><br>
+    <p><strong>Precio</strong></p>
+    <label><input type="radio" name="precio"> Hasta $1.500</label>
+    <label><input type="radio" name="precio"> $1.500 a $3.000</label>
+    <label><input type="radio" name="precio"> $3.000 a $5.000</label>
+    <label><input type="radio" name="precio"> $5.000 a $10.000</label>
+
+    <p><strong>Tipo de Producto</strong></p>
+    <label><input type="checkbox"> Libretas</label>
+    <label><input type="checkbox"> Binders</label>
+    <label><input type="checkbox"> Lapices</label>
+    <label><input type="checkbox"> Stickers</label>
+  </div>
+
+  <div class="products">
+    <div class="product">
+      <img src="https://via.placeholder.com/200x150" alt="Lápices zanahoria  ">
+      <p>Lápices zanahoria</p>
+      <strong>$2.990</strong>
+    </div>
+
+    <div class="product">
+      <img src="https://via.placeholder.com/200x150/ffc0cb" alt="Estuche Cardcaptor Sakura">
+      <p>Estuche Cardcaptor Sakura</p>
+      <strong>$5.490</strong>
+    </div>
+
+    <div class="product agotado">
+      <img src="https://via.placeholder.com/200x150/cccccc" alt="Estuche Totoro">
+      <p>Estuche Totoro Susuwatari</p>
+      <strong>$5.490</strong>
+    </div>
+
+    <div class="product">
+      <img src="https://via.placeholder.com/200x150/fff2b0" alt="Estuche Harry Potter">
+      <p>Estuche Harry Potter</p>
+      <strong>$5.490</strong>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
 
