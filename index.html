@@ -11,7 +11,7 @@
       background-color: #ffe6f0;
     }
 
-    /* Aviso superior */
+    /* Barra superior */
     .top-bar {
       background-color: #5a479e;
       color: white;
@@ -20,43 +20,46 @@
       font-size: 14px;
     }
 
-    /* Encabezado con logo y redes */
+    /* Encabezado completo: redes + logo + buscador */
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 15px 30px;
       background-color: white;
+      flex-wrap: wrap;
     }
 
     .logo img {
       height: 100px;
     }
 
-    .social-search {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
-  padding: 10px 20px;
-  position: relative;
-}
+    .right-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-.social-icons a img {
-  width: 25px;
-  height: 25px;
-  margin-left: 10px;
-}
+    .right-box a img {
+      width: 25px;
+      height: 25px;
+    }
 
-.social-search input {
-  padding: 8px 12px;
-  border: 2px solid pink;
-  border-radius: 20px;
-  outline: none;
-  font-size: 14px;
-}
+    .right-box input {
+      padding: 8px 12px;
+      border: 2px solid pink;
+      border-radius: 20px;
+      font-size: 14px;
+      outline: none;
+    }
 
-    /* Menú rosa */
+    /* Banner */
+    .banner img {
+      width: 100%;
+      display: block;
+    }
+
+    /* Menú navegación */
     .nav {
       background-color: #fdaecb;
       text-align: center;
@@ -70,7 +73,7 @@
       font-weight: bold;
     }
 
-      /* Productos */
+    /* Productos */
     .productos {
       display: flex;
       flex-wrap: wrap;
@@ -110,24 +113,24 @@
     📦 Aprovecha los envíos gratis por compras sobre $30.000 en Stgo
   </div>
 
+  <!-- HEADER COMPLETO -->
   <div class="header">
-      </div>
-    <div class="social-icons">
+    <div class="logo">
+      <img src="bannerdelgado.png" alt="Happy Maydem">
+    </div>
+    <div class="right-box">
       <a href="https://www.instagram.com/happy.maydem" target="_blank">
         <img src="https://img.icons8.com/color/48/instagram-new.png" alt="Instagram"></a>
-      <a href="https://www.facebook.com/people/Happy-Maydem/100092744970823/?rdid=EmZnRZDStIAk8yNx&share_url=https%253A%252F%252Fwww.facebook.com%252Fshare%252F1GrRNBXCbU%252F" target="_blank">
+      <a href="https://www.facebook.com/people/Happy-Maydem/100092744970823/" target="_blank">
         <img src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook"></a>
       <a href="https://www.tiktok.com/@happy.maydem" target="_blank">
         <img src="https://img.icons8.com/ios-filled/50/000000/tiktok--v1.png" alt="TikTok" style="width:24px;">
-</a>
-    <input type="text" placeholder="¿Qué quieres buscar?">
+      </a>
+      <input type="text" placeholder="¿Qué quieres buscar?">
     </div>
   </div>
- <!-- BANNER PRINCIPAL -->
-<div class="banner">
-  <img src="bannerdelgado.png" alt="Banner Happy Maydem" />
-</div>
-<!-- Menú de navegación -->
+
+  <!-- Menú de navegación -->
   <div class="nav">
     <a href="index.html">INICIO</a>
     <a href="papeleria.html">PAPELERÍA</a>
@@ -137,10 +140,7 @@
     <a href="anime.html">ANIME</a>
   </div>
 
-  <div class="search-bar">
-    <input type="text" placeholder="¿Qué quieres buscar?">
-  </div>
-
+  <!-- Productos -->
   <div class="productos">
     <div class="producto">
       <img src="https://via.placeholder.com/200" alt="Producto 1">
