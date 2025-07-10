@@ -33,10 +33,28 @@
       height: 100px;
     }
 
-    .social-icons img {
-      width: 24px;
-      margin-left: 10px;
-    }
+    .social-search {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 10px 20px;
+  position: relative;
+}
+
+.social-icons a img {
+  width: 25px;
+  height: 25px;
+  margin-left: 10px;
+}
+
+.social-search input {
+  padding: 8px 12px;
+  border: 2px solid pink;
+  border-radius: 20px;
+  outline: none;
+  font-size: 14px;
+}
 
     /* Menú rosa */
     .nav {
@@ -52,21 +70,7 @@
       font-weight: bold;
     }
 
-    /* Buscador */
-    .search-bar {
-      position: absolute;
-      right: 40px;
-      top: 95px;
-    }
-
-    .search-bar input {
-      padding: 5px 10px;
-      border-radius: 20px;
-      border: 6px solid #fdaecb;
-      outline: none;
-    }
-
-    /* Productos */
+      /* Productos */
     .productos {
       display: flex;
       flex-wrap: wrap;
@@ -118,6 +122,7 @@
       <a href="https://www.tiktok.com/@happy.maydem" target="_blank">
         <img src="https://img.icons8.com/ios-filled/50/000000/tiktok--v1.png" alt="TikTok" style="width:24px;">
 </a>
+    <input type="text" placeholder="¿Qué quieres buscar?">
     </div>
   </div>
  
