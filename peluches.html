@@ -51,12 +51,13 @@
       padding: 30px;
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
+      justify-content: space-evenly;
       gap: 20px;
     }
 
     .product {
-      width: 180px;
+      width: calc(33.33% - 40px); /* 3 por fila con espacio entre ellos */
+      max-width: 200px;
       padding: 10px;
       background-color: white;
       text-align: center;
