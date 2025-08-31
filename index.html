@@ -49,7 +49,7 @@
     <img src="bannerdelgado.png" alt="Banner Happy Maydem" class="w-full block" onerror="this.style.display='none'">
   </div>
 
-  <!-- Menú que filtra en esta misma página -->
+  <!-- Menú -->
   <nav class="w-full text-center py-3" style="background:var(--hm-pink)">
     <a href="index.html" data-cat="" class="mx-3 text-white font-bold hover:underline">INICIO</a>
     <a href="papeleria.html" data-cat="Papelería" class="mx-3 text-white font-bold hover:underline">PAPELERÍA</a>
@@ -117,31 +117,29 @@
 
     // ---------- DATOS ----------
     const ALL_PRODUCTS = [
-      { id:"bt21-a5", title:"Libreta BT21 A5", price:5000, image:"Libreta Bt21.png", category:"Papelería", "Kpop", tags:["libreta","bt21"], featured:true },
-      { id:"lovelys", title:"Peluches Lovelys Twice Summer (Alternativos)", price:4000, image:"Lovelys.JPG", category:"Peluches", "Kpop", tags:["twice","peluche"], featured:false },
-      { id:"note-huntrix-a6", title:"Cuaderno A6 Huntrix", price:4000, image:"Note_Huntrix.png", category:"Papelería", "Kpop", tags:["libreta","cuaderno","huntrix"], featured:true }
+      { id:"bt21-a5", title:"Libreta BT21 A5", price:5000, image:"Libreta Bt21.png", category:"Papelería", tags:["libreta","bt21"], featured:true },
+      { id:"lovelys", title:"Peluches Lovelys Twice Summer (Alternativos)", price:4000, image:"Lovelys.JPG", category:"Peluches", tags:["twice","peluche"], featured:false },
+      { id:"note-huntrix-a6", title:"Cuaderno A6 Huntrix", price:4000, image:"Note_Huntrix.png", category:"Papelería", tags:["libreta","cuaderno","huntrix"], featured:true }
     ];
 
     // ---------- UI / RENDER ----------
-    const HOME_MAX = 9; // máximo de destacados en el home
-    let ACTIVE_CATEGORY = ""; // vacío = home
+    const HOME_MAX = 9;
+    let ACTIVE_CATEGORY = "";
 
     const inputSearch = document.getElementById('search');
     const selSort = document.getElementById('sort');
     const grid = document.getElementById('grid');
 
-    const slug = s => (s||'')
-      .toString()
-      .toLowerCase()
-      .normalize('NFD').replace(/[\u0300-\u036f]/g,'') // sin acentos
-      .replace(/[^a-z0-9]+/g,'');                     // sin guiones/espacios
+    const slug = s => (s||'').toString().toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .replace(/[^a-z0-9]+/g,'');
 
     const fmtPrice = n => STORE.currency + n.toLocaleString('es-CL');
 
     function cardHTML(p){
       return `
         <article class="hm-card overflow-hidden shadow-sm hover:shadow transition">
-          <img src="${p.image}" alt="${p.title}" class="w-full h-64 object-cover"/>
+          <img src="${p.image}" alt="${p.title}" class="w-full h-64 sm:h-72 lg:h-80 object-cover"/>
           <div class="p-4 space-y-2 text-center">
             <h3 class="font-semibold line-clamp-2">${p.title}</h3>
             <div class="text-slate-600 text-sm">${p.category}</div>
@@ -156,13 +154,11 @@
     function getProducts(){
       let list = [...ALL_PRODUCTS];
 
-      // Filtro por categoría (tolerante a acentos/guiones)
       if (ACTIVE_CATEGORY){
         const wanted = slug(ACTIVE_CATEGORY);
         list = list.filter(p => slug(p.category) === wanted);
       }
 
-      // Búsqueda
       const q = (inputSearch?.value || '').trim().toLowerCase();
       if (q){
         const qn = slug(q);
@@ -172,7 +168,6 @@
         );
       }
 
-      // Orden
       switch (selSort?.value) {
         case 'price_asc':  list.sort((a,b)=>a.price-b.price); break;
         case 'price_desc': list.sort((a,b)=>b.price-a.price); break;
@@ -180,10 +175,7 @@
         default:           list.sort((a,b)=>Number(b.featured)-Number(a.featured));
       }
 
-      // Home: si NO hay categoría NI búsqueda → solo destacados
-      if (!ACTIVE_CATEGORY && !q) {
-        list = list.filter(p => p.featured).slice(0, HOME_MAX);
-      }
+      if (!ACTIVE_CATEGORY && !q) list = list.filter(p => p.featured).slice(0, HOME_MAX);
 
       return list;
     }
@@ -191,7 +183,6 @@
     function renderProducts(){
       const list = getProducts();
       grid.innerHTML = list.length ? list.map(cardHTML).join('') : emptyHTML();
-
       grid.querySelectorAll('.btn-add').forEach(btn=>{
         btn.onclick = ()=>{
           const p = ALL_PRODUCTS.find(x => x.id === btn.dataset.id);
@@ -200,21 +191,21 @@
       });
     }
 
-    // Menú
+    // Menú: solo intercepto si el link es "#", si tiene href a otra página, dejo navegar.
     document.querySelectorAll('nav [data-cat]').forEach(a=>{
       a.addEventListener('click', (e)=>{
-        e.preventDefault();
-        ACTIVE_CATEGORY = a.getAttribute('data-cat') || "";
-        renderProducts();
-        window.scrollTo({ top: grid.offsetTop - 80, behavior:'smooth' });
+        const href = a.getAttribute('href');
+        if (!href || href === '#') {
+          e.preventDefault();
+          ACTIVE_CATEGORY = a.getAttribute('data-cat') || "";
+          renderProducts();
+          window.scrollTo({ top: grid.offsetTop - 80, behavior:'smooth' });
+        }
       });
     });
 
-    // Eventos
     inputSearch?.addEventListener('input', renderProducts);
     selSort?.addEventListener('input', renderProducts);
-
-    // Init
     renderProducts();
   </script>
 </body>
