@@ -92,20 +92,127 @@
     <div id="grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 py-6"></div>
   </section>
 
+  <!-- ===== CARRITO (drawer) ===== -->
+  <aside id="cartDrawer" class="fixed top-0 right-0 w-full max-w-md h-full bg-white border-l border-slate-200 shadow-xl drawer closed z-50">
+    <div class="h-full flex flex-col">
+      <div class="px-4 py-3 border-b flex items-center gap-3">
+        <button id="closeCart" class="text-xl">✖</button>
+        <h2 class="font-bold text-lg">Tu carrito</h2>
+      </div>
+      <div id="cartItems" class="flex-1 overflow-auto divide-y"></div>
+      <div class="p-4 border-t space-y-2">
+        <div class="flex justify-between font-semibold">
+          <span>Total</span><span id="cartTotal">$0</span>
+        </div>
+        <button id="btnWhatsappCart" class="w-full px-4 py-2 rounded-xl text-white font-semibold hover:opacity-90" style="background:#5a479e">
+          Enviar pedido por WhatsApp
+        </button>
+        <p class="text-xs text-slate-500">No pagas aquí. Te contactamos por WhatsApp para coordinar pago y envío.</p>
+      </div>
+    </div>
+  </aside>
+
   <!-- ======= SCRIPTS (al final, así el DOM ya existe) ======= -->
   <script>
     // === CONFIG BÁSICA ===
     const STORE = {
       name: "Happy Maydem",
-      whatsappNumber: "56995733148", // <-- cambia por tu número real (sin + ni espacios)
+      whatsappNumber: "56995733148", // tu número (sin + ni espacios)
       currency: "$",
       freeShippingThreshold: 30000,
     };
 
-    // === LISTA DE PRODUCTOS (prueba mínima) ===
+    /* === HM_CART: carrito con localStorage + WhatsApp === */
+    (function(){
+      const LS_KEY = 'hm_cart_v1';
+      const load = () => JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+      const save = c => localStorage.setItem(LS_KEY, JSON.stringify(c));
+      const fmt  = n => STORE.currency + n.toLocaleString('es-CL');
+
+      const api = {
+        add({id,title,price,qty=1}) {
+          const c = load();
+          const f = c.find(i => i.id === id);
+          if (f) f.qty += qty; else c.push({id,title,price,qty});
+          save(c); api.render();
+        },
+        get(){ return load(); },
+        count(){ return load().reduce((s,i)=>s+i.qty,0); },
+        total(){ return load().reduce((s,i)=>s+i.price*i.qty,0); },
+        clear(){ save([]); api.render(); },
+        fmt,
+        whatsAppURL(){
+          const cart = load();
+          const lines = cart.length ? [
+            `Hola! Quiero hacer un pedido en *${STORE.name}*:`,
+            ...cart.map(i=>`• ${i.title} × ${i.qty} — ${fmt(i.price*i.qty)}`),
+            ``,
+            `Total: ${fmt(api.total())}`,
+            ``,
+            `Comuna/Región:`,
+            `Método de pago (transferencia/efectivo):`
+          ] : [`Hola!`];
+          return `https://wa.me/${STORE.whatsappNumber}?text=${encodeURIComponent(lines.join('\n'))}`;
+        },
+        render(){
+          const countEl = document.getElementById('cartCount');
+          if (countEl) countEl.textContent = api.count();
+
+          const itemsEl = document.getElementById('cartItems');
+          const totalEl = document.getElementById('cartTotal');
+          const cart = load();
+
+          if (itemsEl && totalEl){
+            totalEl.textContent = fmt(api.total());
+            itemsEl.innerHTML = cart.length ? cart.map(i=>`
+              <div class="flex items-center gap-3 p-3">
+                <div class="flex-1">
+                  <div class="font-medium">${i.title}</div>
+                  <div class="text-sm text-slate-600">${i.qty} × ${fmt(i.price)}</div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button class="px-2 py-1 rounded border" data-act="dec" data-id="${i.id}">−</button>
+                  <button class="px-2 py-1 rounded border" data-act="inc" data-id="${i.id}">+</button>
+                  <button class="px-2 py-1 rounded border" data-act="del" data-id="${i.id}">🗑</button>
+                </div>
+              </div>
+            `).join('') : `<div class="p-6 text-center text-slate-500">Tu carrito está vacío</div>`;
+
+            // acciones cantidad / borrar
+            itemsEl.querySelectorAll('button').forEach(b=>{
+              b.onclick = ()=>{
+                const id = b.dataset.id, act = b.dataset.act;
+                const c = load(); const it = c.find(x=>x.id===id); if(!it) return;
+                if (act==='inc') it.qty++;
+                if (act==='dec') it.qty = Math.max(1, it.qty-1);
+                if (act==='del') c.splice(c.findIndex(x=>x.id===id),1);
+                save(c); api.render();
+              };
+            });
+          }
+
+          const btnCart = document.getElementById('btnWhatsappCart');
+          if (btnCart) btnCart.onclick = ()=> window.open(api.whatsAppURL(), '_blank');
+        }
+      };
+
+      window.HM_CART = api;
+
+      // abrir/cerrar cajón
+      window.addEventListener('DOMContentLoaded', ()=>{
+        const openBtn = document.getElementById('openCart');
+        const closeBtn = document.getElementById('closeCart');
+        const drawer  = document.getElementById('cartDrawer');
+        if (openBtn && drawer) openBtn.onclick = ()=> drawer.classList.remove('closed');
+        if (closeBtn && drawer) closeBtn.onclick = ()=> drawer.classList.add('closed');
+        api.render(); // pintar contador al cargar
+      });
+    })();
+
+    // === LISTA DE PRODUCTOS (puedes agregar más) ===
     const ALL_PRODUCTS = [
       { id: "bt21-a5", title: "Libreta BT21 A5", price: 5000, image: "Libreta Bt21.png", category: "Papelería", tags: ["libreta","bt21"], featured: true },
-      { id: "lovelys", title: "Peluches Lovelys Twice Summer (Alternativos)", price: 4000, image: "Lovelys.JPG", category: "Peluches", tags: ["twice","peluche"], featured: false },
+      { id: "lovelys", title: "Peluches Lovelys Twice Summer (Alternativos)", price: 4000, image: "Lovelys.JPG", category: "Peluches", tags: ["twice","peluche"], featured: false }
     ];
 
     // Estado de categoría (por menú)
@@ -157,10 +264,11 @@
       const list = getProducts();
       grid.innerHTML = list.length ? list.map(cardHTML).join('') : emptyHTML();
 
-      // Botón "Añadir" (por ahora solo prueba)
+      // Botón "Añadir" (ahora sí al carrito)
       grid.querySelectorAll('.btn-add').forEach(btn=>{
         btn.onclick = ()=>{
-          alert('Render OK 🥳 (después conectamos el carrito)');
+          const p = ALL_PRODUCTS.find(x => x.id === btn.dataset.id);
+          HM_CART.add({ id: p.id, title: p.title, price: p.price, qty: 1 });
         };
       });
     }
