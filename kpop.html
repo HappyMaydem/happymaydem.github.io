@@ -1,150 +1,84 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>K-POP - Happy Maydem</title>
-  <link rel="icon" href="Logo-_1_.ico" type="image/x-icon">
-  <style>
-    body {
-       font-family: 'Comic Sans MS', cursive;
-      margin: 0;
-      background-color: #fff5fa;
-    }
+<!doctype html>
 
-    .nav {
-      background-color: #fdaecb;
-      text-align: center;
-      padding: 10px 0;
-    }
 
-    .nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 15px;
-      font-weight: bold;
-    }
-
-    .container {
-      display: flex;
-    }
-
-    .sidebar {
-      width: 220px;
-      background-color: #f3e5f5;
-      padding: 20px;
-      border-right: 2px dashed pink;
-      height: 100vh;
-    }
-
-    .sidebar h3 {
-      margin-top: 0;
-      color: #824ba6;
-    }
-
-    .sidebar label {
-      display: block;
-      margin: 5px 0;
-    }
-
-    .products {
-      flex: 1;
-      padding: 30px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    .product {
-      width: 180px;
-      padding: 10px;
-      background-color: white;
-      text-align: center;
-      border-radius: 8px;
-      border: 2px dashed pink;
-      position: relative;
-    }
-
-    .product img {
-      width: 100%;
-      border-radius: 2px;
-    }
-
-    .agotado::after {
-      content: "AGOTADO";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background-color: rgba(0,0,0,0.6);
-      color: white;
-      font-weight: bold;
-      font-size: 16px;
-      padding: 5px 0;
-    }
-  </style>
-</head>
-<body>
-<img src="bannerdelgado.png" alt="Banner Happy Maydem" style="width: 100%; display: block;">
-  <div class="nav">
-  <a href="index.html">INICIO</a>
-  <a href="papeleria.html">PAPELERÍA</a>
-  <a href="peluches.html">PELUCHES</a>
-  <a href="accesorios.html">ACCESORIOS</a>
-  <a href="kpop.html">K-POP</a>
-  <a href="anime.html">ANIME</a>
-</div>
-<div class="container">
-  <div class="sidebar">
-    <h3>K-POP</h3>
-    <strong>Filtrar</strong><br><br>
-    <p><strong>Grupo</strong></p>
-    <label><input type="checkbox"> Aespa</label>
-    <label><input type="checkbox"> Astro</label>
-    <label><input type="checkbox"> Ateez</label>
-    <label><input type="checkbox"> Baby Monster</label>
-    <label><input type="checkbox"> BlackPink</label>
-    <label><input type="checkbox"> BTS</label>
-    <label><input type="checkbox"> Enhypen</label>
-    <label><input type="checkbox"> Itzy</label>
-    <label><input type="checkbox"> Ive</label>
-    <label><input type="checkbox"> Kateyes</label>
-    <label><input type="checkbox"> StrayKids</label>
-    <label><input type="checkbox"> Twice</label>
-
-    <p><strong>Tipo</strong></p>
-    <label><input type="checkbox"> Stickers</label>
-    <label><input type="checkbox"> Photocards</label>
-    <label><input type="checkbox"> Llaveros</label>
-    <label><input type="checkbox"> Posters</label>
-  </div>
-
-  <div class="products">
-    <div class="product">
-      <img src="https://via.placeholder.com/200x150" alt="Tarjetas BTS">
-      <p>Tarjetas BTS</p>
-      <strong>$2.000</strong>
-    </div>
-
-    <div class="product">
-      <img src="https://via.placeholder.com/200x150/fce4ec" alt="Sticker Stray Kids">
-      <p>Sticker Stray Kids</p>
-      <strong>$1.500</strong>
-    </div>
-
-    <div class="product agotado">
-      <img src="https://via.placeholder.com/200x150/cccccc" alt="Llavero Cha Eun Woo">
-      <p>Llavero Cha Eun Woo</p>
-      <strong>$2.500</strong>
-    </div>
-
-    <div class="product">
-      <img src="https://via.placeholder.com/200x150/f8bbd0" alt="Mini Poster Seventeen">
-      <p>Mini Poster Seventeen</p>
-      <strong>$3.000</strong>
-    </div>
-  </div>
+<main class="max-w-6xl mx-auto px-4 py-6">
+<div class="flex items-end gap-3 hm-card p-4 bg-white">
+<label class="block">
+<span class="text-sm font-medium">Ordenar</span>
+<select id="sort" class="mt-1 w-full rounded-xl border px-3 py-2">
+<option value="featured">Destacados</option>
+<option value="price_asc">Precio: menor a mayor</option>
+<option value="price_desc">Precio: mayor a menor</option>
+<option value="az">A → Z</option>
+</select>
+</label>
+<a id="btnWhatsappTop" target="_blank" class="btn-outline ml-auto px-4 py-2 rounded-2xl font-semibold" style="border:2px dashed var(--hm-dashed)">Escríbenos por WhatsApp</a>
 </div>
 
-</body>
-</html>
+
+<div id="grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4"></div>
+</main>
+
+
+<aside id="cartDrawer" class="fixed top-0 right-0 w-full max-w-md h-full bg-white border-l border-slate-200 shadow-xl drawer closed z-50">
+<div class="h-full flex flex-col">
+<div class="px-4 py-3 border-b flex items-center gap-3"><button id="closeCart" class="text-xl">✖</button><h2 class="font-bold text-lg">Tu carrito</h2></div>
+<div id="cartItems" class="flex-1 overflow-auto divide-y"></div>
+<div class="p-4 border-t space-y-2">
+<div class="flex justify-between font-semibold"><span>Total</span><span id="cartTotal">$0</span></div>
+<button id="btnWhatsappCart" class="w-full px-4 py-2 rounded-xl text-white font-semibold hover:opacity-90" style="background:var(--hm-primary)">Enviar pedido por WhatsApp</button>
+<p class="text-xs text-slate-500">No pagas aquí. Te contactamos por WhatsApp para coordinar pago y envío.</p>
+</div>
+</div>
+</aside>
+
+
+<script>
+const STORE = { name:'Happy Maydem', whatsappNumber:'56912345678', currency:'$' };
+const PRODUCTS = [
+{ id:'lovelys', title:'Peluches Lovelys Twice Summer (Alternativos)', price:4000, image:'Lovelys.JPG', category:'Peluches', type:'Peluche', tags:['twice','peluche'], featured:true },
+{ id:'pillot', title:'Peluche Pillot', price:8000, image:'PeluchePillot.JPG', category:'Peluches', type:'Peluche', tags:['peluche'], featured:false },
+{ id:'skzoo-magic', title:'SKZOO Magic School (Alternativo)', price:9000, image:'PleucheSkzooMagicSchool.JPG', category:'Peluches', type:'Peluche', tags:['skz','peluche'], featured:false }
+];
+
+
+// === Carrito simple (igual que otras páginas) ===
+let cart = JSON.parse(localStorage.getItem('hm_cart')||'[]');
+const save=()=>localStorage.setItem('hm_cart',JSON.stringify(cart));
+const fmt=n=>`${STORE.currency}${n.toLocaleString('es-CL')}`;
+const openCart=document.getElementById('openCart');
+const closeCart=document.getElementById('closeCart');
+const cartDrawer=document.getElementById('cartDrawer');
+const cartItems=document.getElementById('cartItems');
+const cartTotal=document.getElementById('cartTotal');
+const cartCount=document.getElementById('cartCount');
+const btnWhatsappTop=document.getElementById('btnWhatsappTop');
+const btnWhatsappCart=document.getElementById('btnWhatsappCart');
+function updateCartUI(){
+const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+if(cartCount) cartCount.textContent=cart.reduce((s,i)=>s+i.qty,0);
+if(cartTotal) cartTotal.textContent=fmt(total);
+if(cartItems) cartItems.innerHTML = cart.map(i=>`<div class=\"flex items-center gap-3 p-3\"><div class=\"flex-1\"><div class=\"font-medium\">${i.title}</div><div class=\"text-sm text-slate-600\">${i.qty} × ${fmt(i.price)}</div></div><div class=\"flex items-center gap-2\"><button class=\"px-2 py-1 rounded border\" data-act=\"dec\" data-id=\"${i.id}\">−</button><button class=\"px-2 py-1 rounded border\" data-act=\"inc\" data-id=\"${i.id}\">+</button><button class=\"px-2 py-1 rounded border\" data-act=\"del\" data-id=\"${i.id}\">🗑</button></div></div>`).join('') || `<div class=\"p-6 text-center text-slate-500\">Tu carrito está vacío</div>`;
+if(cartItems) cartItems.querySelectorAll('button').forEach(b=>{b.onclick=()=>{const{id,act}=b.dataset;const it=cart.find(x=>x.id===id);if(!it)return;if(act==='inc')it.qty++;if(act==='dec')it.qty=Math.max(1,it.qty-1);if(act==='del')cart=cart.filter(x=>x.id!==id);save();updateCartUI();}});
+const url=`https://wa.me/${STORE.whatsappNumber}?text=${encodeURIComponent(cart.length?`Hola! Quiero comprar en *${STORE.name}*:
+`+cart.map(i=>`• ${i.title} × ${i.qty} — ${fmt(i.price*i.qty)}`).join('
+')+`
+
+
+Total: ${fmt(total)}
+
+
+Comuna/Región:
+Método de pago:`:'Hola!')}`;
+if(btnWhatsappTop) btnWhatsappTop.href=url; if(btnWhatsappCart) btnWhatsappCart.onclick=()=>window.open(url,'_blank');
+}
+if(openCart&&cartDrawer){openCart.onclick=()=>cartDrawer.classList.remove('closed');}
+if(closeCart&&cartDrawer){closeCart.onclick=()=>cartDrawer.classList.add('closed');}
+
+
+function render(){
+const grid=document.getElementById('grid'); const sort=document.getElementById('sort'); const q=(document.getElementById('search')?.value||'').toLowerCase().trim();
+let list=PRODUCTS.filter(p=>!q||p.title.toLowerCase().includes(q)||p.tags.some(t=>t.includes(q)));
+switch(sort?.value){case'price_asc':list.sort((a,b)=>a.price-b.price);break;case'price_desc':list.sort((a,b)=>b.price-a.price);break;case'az':list.sort((a,b)=>a.title.localeCompare(b.title));break;default:list.sort((a,b)=>Number(b.featured)-Number(a.featured));}
+grid.innerHTML = list.map(p=>`<article class=\"hm-card overflow-hidden shadow-sm hover:shadow transition\"><img src=\"${p.image}\" alt=\"${p.title}\" class=\"w-full h-48 object-cover\"/><div class=\"p-4 space-y-2 text-center\"><h3 class=\"font-semibold line-clamp-2\">${p.title}</h3><div class=\"text-slate-600 text-sm\">${p.category}</div><div class=\"font-bold\">${fmt(p.price)}</div><button data-id=\"${p.id}\" class=\"btn-add w-full px-4 py-2 rounded-xl text-white font-semibold\" style=\"background:var(--hm-primary)\">Añadir al carrito</button></div></article>`).join('');
+grid.querySelectorAll('.btn-add').forEach(b=>{b.onclick=()=>{const p=PRODUCTS.find(x=>x.id===b.dataset.id);const it=cart.fi
