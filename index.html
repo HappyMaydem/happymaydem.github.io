@@ -1,319 +1,87 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Happy Maydem 🐱✨ – Papelería & Fandom</title>
-  <meta name="description" content="Papelería kawaii, fandom K‑pop y anime. Compras por WhatsApp con retiro/ despacho.">
-  <!-- Favicon: reemplaza por tu logo si quieres -->
-  <link rel="icon" href="https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f431.png" />
-  <!-- Tailwind para layout rápido (CDN) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* Identidad Happy Maydem – pasteles + Comic Sans */
-    :root{
-      --hm-bg:#ffe6f0;       /* rosado pastel fondo */
-      --hm-primary:#5a479e;  /* morado marca (barra superior/acentos) */
-      --hm-pink:#fdaecb;     /* rosado menú */
-      --hm-dashed:pink;      /* bordes dashed tarjetas */
-    }
-    body{ font-family:'Comic Sans MS', cursive, sans-serif; background:var(--hm-bg); }
-    /* Tarjetas con borde dashed estilo Happy Maydem */
-    .hm-card{ border:2px dashed var(--hm-dashed); border-radius:14px; background:#fff }
-    /* Drawer carrito */
-    .drawer{transition:transform .25s ease}
-    .drawer.closed{transform:translateX(100%)}
-    /* 2 líneas título */
-    .line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Happy Maydem 🐱✨ – Papelería & Fandom</title>
+<meta name="description" content="Papelería kawaii, fandom K‑pop y anime. Compras por WhatsApp con retiro/ despacho.">
+<!-- Favicon: reemplaza por tu logo si quieres -->
+<link rel="icon" href="https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f431.png" />
+<!-- Tailwind para layout rápido (CDN) -->
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+/* Identidad Happy Maydem – pasteles + Comic Sans */
+:root{
+--hm-bg:#ffe6f0; /* rosado pastel fondo */
+--hm-primary:#5a479e; /* morado marca (barra superior/acentos) */
+--hm-pink:#fdaecb; /* rosado menú */
+--hm-dashed:pink; /* bordes dashed tarjetas */
+}
+body{ font-family:'Comic Sans MS', cursive, sans-serif; background:var(--hm-bg); }
+/* Tarjetas con borde dashed estilo Happy Maydem */
+.hm-card{ border:2px dashed var(--hm-dashed); border-radius:14px; background:#fff }
+/* Drawer carrito */
+.drawer{transition:transform .25s ease}
+.drawer.closed{transform:translateX(100%)}
+/* 2 líneas título */
+.line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
 </head>
 <body class="text-slate-800">
-  <!-- Barra superior promo (con tu color morado) -->
-  <div class="w-full text-center text-white text-sm py-2" style="background:var(--hm-primary)">📦 Aprovecha los <b>envíos gratis</b> por compras sobre <b>$30.000</b> en Stgo</div>
+<!-- Barra superior promo (con tu color morado) -->
+<div class="w-full text-center text-white text-sm py-2" style="background:var(--hm-primary)">📦 Aprovecha los <b>envíos gratis</b> por compras sobre <b>$30.000</b> en Stgo</div>
 
-  <!-- Encabezado: logo + redes + buscador -->
-  <header class="bg-white">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center gap-3 justify-between">
-      <!-- Logo (reemplaza src por tu imagen) -->
-      <a href="/" class="flex items-center gap-3">
-        <img src="logo.png" alt="Happy Maydem" class="h-16 md:h-20" onerror="this.style.display='none'"/>
-        <span class="text-2xl md:text-3xl font-black tracking-tight">Happy Maydem 🐱✨</span>
-      </a>
-      <div class="flex items-center gap-3">
-        <!-- Redes -->
-        <a href="https://www.instagram.com/happy.maydem" target="_blank" aria-label="Instagram" class="p-2 rounded-full hover:bg-pink-100">
-          <img src="https://img.icons8.com/color/48/instagram-new.png" class="w-6 h-6" alt="Instagram">
-        </a>
-        <a href="https://www.facebook.com/people/Happy-Maydem/100092744970823/" target="_blank" aria-label="Facebook" class="p-2 rounded-full hover:bg-pink-100">
-          <img src="https://img.icons8.com/color/48/facebook-new.png" class="w-6 h-6" alt="Facebook">
-        </a>
-        <a href="https://www.tiktok.com/@happy.maydem" target="_blank" aria-label="TikTok" class="p-2 rounded-full hover:bg-pink-100">
-          <img src="https://img.icons8.com/ios-filled/50/000000/tiktok--v1.png" class="w-5 h-5" alt="TikTok">
-        </a>
-        <!-- Buscador -->
-        <input id="search" type="search" placeholder="¿Qué quieres buscar?" class="px-3 py-2 rounded-full border-2" style="border-color:var(--hm-dashed)"/>
-        <!-- Botón carrito -->
-        <button id="openCart" class="ml-1 px-4 py-2 rounded-full text-white font-semibold" style="background:var(--hm-primary)">🛒 Carrito <span id="cartCount" class="font-bold">0</span></button>
-      </div>
-    </div>
-  </header>
 
-  <!-- Banner completo -->
-  <div class="banner">
-    <img src="bannerdelgado.png" alt="Banner Happy Maydem" class="w-full block" onerror="this.style.display='none'">
-  </div>
+<!-- Encabezado: logo + redes + buscador -->
+<header class="bg-white">
+<div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center gap-3 justify-between">
+<!-- Logo (reemplaza src por tu imagen) -->
+<a href="/" class="flex items-center gap-3">
+<img src="logo.png" alt="Happy Maydem" class="h-16 md:h-20" onerror="this.style.display='none'"/>
+<span class="text-2xl md:text-3xl font-black tracking-tight">Happy Maydem 🐱✨</span>
+</a>
+<div class="flex items-center gap-3">
+<!-- Redes -->
+<a href="https://www.instagram.com/happy.maydem" target="_blank" aria-label="Instagram" class="p-2 rounded-full hover:bg-pink-100">
+<img src="https://img.icons8.com/color/48/instagram-new.png" class="w-6 h-6" alt="Instagram">
+</a>
+<a href="https://www.facebook.com/people/Happy-Maydem/100092744970823/" target="_blank" aria-label="Facebook" class="p-2 rounded-full hover:bg-pink-100">
+<img src="https://img.icons8.com/color/48/facebook-new.png" class="w-6 h-6" alt="Facebook">
+</a>
+<a href="https://www.tiktok.com/@happy.maydem" target="_blank" aria-label="TikTok" class="p-2 rounded-full hover:bg-pink-100">
+<img src="https://img.icons8.com/ios-filled/50/000000/tiktok--v1.png" class="w-5 h-5" alt="TikTok">
+</a>
+<!-- Buscador -->
+<input id="search" type="search" placeholder="¿Qué quieres buscar?" class="px-3 py-2 rounded-full border-2" style="border-color:var(--hm-dashed)"/>
+<!-- Botón carrito -->
+<button id="openCart" class="ml-1 px-4 py-2 rounded-full text-white font-semibold" style="background:var(--hm-primary)">🛒 Carrito <span id="cartCount" class="font-bold">0</span></button>
+</div>
+</div>
+</header>
 
-  <!-- Menú navegación de secciones -->
-  <nav class="w-full text-center py-3" style="background:var(--hm-pink)">
-    <a href="#" data-cat="" class="mx-3 text-white font-bold hover:underline">INICIO</a>
-    <a href="#" data-cat="Papelería" class="mx-3 text-white font-bold hover:underline">PAPELERÍA</a>
-    <a href="#" data-cat="Peluches" class="mx-3 text-white font-bold hover:underline">PELUCHES</a>
-    <a href="#" data-cat="Accesorios" class="mx-3 text-white font-bold hover:underline">ACCESORIOS</a>
-    <a href="#" data-cat="K‑pop" class="mx-3 text-white font-bold hover:underline">KPOP</a>
-    <a href="#" data-cat="Anime" class="mx-3 text-white font-bold hover:underline">ANIME</a>
-  </nav>
 
-  <!-- Controles adicionales -->
-  <section class="max-w-6xl mx-auto px-4 mt-4">
-    <div class="bg-white hm-card p-4 grid md:grid-cols-3 gap-3 items-end">
-      <label class="block">
-        <span class="text-sm font-medium">Ordenar</span>
-        <select id="sort" class="mt-1 w-full rounded-xl border px-3 py-2">
-          <option value="featured">Destacados</option>
-          <option value="price_asc">Precio: menor a mayor</option>
-          <option value="price_desc">Precio: mayor a menor</option>
-          <option value="az">A → Z</option>
-        </select>
-      </label>
-      <label class="block">
-        <span class="text-sm font-medium">Categoría</span>
-        <select id="category" class="mt-1 w-full rounded-xl border px-3 py-2">
-          <option value="">Todas</option>
-        </select>
-      </label>
-      <a id="btnWhatsappTop" target="_blank" class="mt-6 md:mt-0 text-center px-4 py-2 rounded-2xl font-semibold block" style="border:2px dashed var(--hm-dashed)">Escríbenos por WhatsApp</a>
-    </div>
-  </section>
+<!-- Banner completo -->
+<div class="banner">
+<img src="bannerdelgado.png" alt="Banner Happy Maydem" class="w-full block" onerror="this.style.display='none'">
+</div>
 
-  <!-- Grid productos (manteniendo tu estética con bordes dashed) -->
-  <section class="max-w-6xl mx-auto px-4 py-6">
-    <div id="grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-  </section>
 
-  <!-- Drawer carrito -->
-  <aside id="cartDrawer" class="fixed top-0 right-0 w-full max-w-md h-full bg-white border-l border-slate-200 shadow-xl drawer closed z-50">
-    <div class="h-full flex flex-col">
-      <div class="px-4 py-3 border-b flex items-center gap-3">
-        <button id="closeCart" class="text-xl">✖</button>
-        <h2 class="font-bold text-lg">Tu carrito</h2>
-      </div>
-      <div id="cartItems" class="flex-1 overflow-auto divide-y"></div>
-      <div class="p-4 border-t space-y-2">
-        <div class="flex justify-between font-semibold"><span>Total</span><span id="cartTotal">$0</span></div>
-        <button id="btnWhatsappCart" class="w-full px-4 py-2 rounded-xl text-white font-semibold hover:opacity-90" style="background:var(--hm-primary)">Enviar pedido por WhatsApp</button>
-        <p class="text-xs text-slate-500">No pagas aquí. Te contactamos por WhatsApp para coordinar pago y envío.</p>
-      </div>
-    </div>
-  </aside>
+<!-- Menú navegación de secciones -->
+<nav class="w-full text-center py-3" style="background:var(--hm-pink)">
+<a href="#" data-cat="" class="mx-3 text-white font-bold hover:underline">INICIO</a>
+<a href="#" data-cat="Papelería" class="mx-3 text-white font-bold hover:underline">PAPELERÍA</a>
+<a href="#" data-cat="Peluches" class="mx-3 text-white font-bold hover:underline">PELUCHES</a>
+<a href="#" data-cat="Accesorios" class="mx-3 text-white font-bold hover:underline">ACCESORIOS</a>
+<a href="#" data-cat="K‑pop" class="mx-3 text-white font-bold hover:underline">KPOP</a>
+<a href="#" data-cat="Anime" class="mx-3 text-white font-bold hover:underline">ANIME</a>
+</nav>
 
-  <!-- Footer con políticas -->
-  <footer class="border-t bg-white/70">
-    <div class="max-w-6xl mx-auto px-4 py-8 grid md:grid-cols-3 gap-6 text-sm">
-      <div>
-        <div class="font-bold">Happy Maydem 🐱✨</div>
-        <p class="text-slate-700">Papelería kawaii & fandom desde Chile.</p>
-      </div>
-      <div>
-        <div class="font-bold">Políticas</div>
-        <ul class="list-disc list-inside text-slate-700">
-          <li>Cambios: 10 días con boleta/recibo.</li>
-          <li>Despachos: RM 24-72h; regiones por courier.</li>
-          <li>Envío gratis sobre $30.000 en RM.</li>
-        </ul>
-      </div>
-      <div>
-        <div class="font-bold">Contacto</div>
-        <p class="text-slate-700">WhatsApp: <a id="waLink" class="underline" target="_blank"></a></p>
-      </div>
-    </div>
-  </footer>
 
-  <script>
-    // === CONFIGURACIÓN BÁSICA ===
-    const STORE = {
-      name: "Happy Maydem",
-      whatsappNumber: "56995733148", // <-- REEMPLAZA por tu número (sin + ni espacios). Ej: 56998765432
-      currency: "$",
-      freeShippingThreshold: 30000,
-    };
-
-    // === CATÁLOGO (combinando tus productos y estructura dinámica) ===
-    // Puedes mantener nombres/archivos locales (Libreta Bt21.png, AlbumSkzHop.jpg, etc.). Si no existen, reemplaza por URLs.
-    /** Campos: id, title, price, image, category, tags, featured **/
-    const PRODUCTS = [
-      { id: "bt21-a5", title: "Libreta BT21 A5", price: 5000, image: "Libreta Bt21.png", category: "Papelería", tags: ["libreta","bt21","a5"], featured: true },
-      { id: "skz-hop", title: "STRAY KIDS – SKZHOP HIPTAPE (HOP) (SKZHOP Ver.)", price: 25000, image: "AlbumSkzHop.jpg", category: "K‑pop", tags: ["stray kids","album"], featured: true },
-      { id: "twice-lovelys", title: "Peluches Lovelys Twice Summer (Alternativos)", price: 4000, image: "Lovelys.JPG", category: "Peluches", tags: ["twice","lovelys","peluche"], featured: false },
-      { id: "pikabara", title: "Pikabara", price: 20000, image: "pikabara.png", category: "Anime", tags: ["figure","anime"], featured: false },
-      // Extras de ejemplo por si quieres más
-      { id: "photocard-holder", title: "Photocard Holder Acrílico", price: 3500, image: "https://images.unsplash.com/photo-1610961151692-b1dc757f3605?q=80&w=1200&auto=format&fit=crop", category: "Accesorios", tags: ["photocard","holder"], featured: true },
-      { id: "sticker-pack", title: "Pack Stickers Kawaii (10u)", price: 2500, image: "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=1200&auto=format&fit=crop", category: "Papelería", tags: ["stickers","kawaii"], featured: true },
-    ];
-
-    // === Estado simple ===
-    let cart = [];
-
-    // === Utilidades ===
-    const fmt = n => `${STORE.currency}${n.toLocaleString('es-CL')}`;
-    const waBase = `https://wa.me/${STORE.whatsappNumber}`;
-
-    // Rellenar categorías (para el selector extra)
-    const categories = Array.from(new Set(PRODUCTS.map(p => p.category))).sort();
-    const selCategory = document.getElementById('category');
-    categories.forEach(cat => selCategory.insertAdjacentHTML('beforeend', `<option value="${cat}">${cat}</option>`));
-
-    const inputSearch = document.getElementById('search');
-    const selSort = document.getElementById('sort');
-
-    function renderProducts(){
-      const q = (inputSearch?.value || '').trim().toLowerCase();
-      const cat = selCategory?.value || '';
-      let list = PRODUCTS.filter(p =>
-        (!q || p.title.toLowerCase().includes(q) || p.tags.some(t => t.includes(q))) &&
-        (!cat || p.category === cat)
-      );
-      switch(selSort?.value){
-        case 'price_asc': list.sort((a,b)=>a.price-b.price); break;
-        case 'price_desc': list.sort((a,b)=>b.price-a.price); break;
-        case 'az': list.sort((a,b)=>a.title.localeCompare(b.title)); break;
-        default: list.sort((a,b)=>Number(b.featured)-Number(a.featured));
-      }
-      const grid = document.getElementById('grid');
-      grid.innerHTML = list.map(p => cardHTML(p)).join('') || emptyHTML();
-      attachAddHandlers();
-    }
-
-    function cardHTML(p){
-      return `
-      <article class="hm-card overflow-hidden shadow-sm hover:shadow transition">
-        <img src="${p.image}" alt="${p.title}" class="w-full h-48 object-cover"/>
-        <div class="p-4 space-y-2 text-center">
-          <h3 class="font-semibold line-clamp-2">${p.title}</h3>
-          <div class="text-slate-600 text-sm">${p.category}</div>
-          <div class="font-bold">${fmt(p.price)}</div>
-          <button data-id="${p.id}" class="btn-add w-full px-4 py-2 rounded-xl text-white font-semibold" style="background:var(--hm-primary)">Añadir al carrito</button>
-        </div>
-      </article>`
-    }
-
-    function emptyHTML(){
-      return `<div class=\"text-center text-slate-600 py-16\">No encontramos productos con ese filtro 😿</div>`
-    }
-
-    function attachAddHandlers(){
-      document.querySelectorAll('.btn-add').forEach(btn=>{
-        btn.onclick = ()=>{
-          const p = PRODUCTS.find(x=>x.id===btn.dataset.id);
-          const item = cart.find(x=>x.id===p.id);
-          if(item) item.qty++; else cart.push({id:p.id, title:p.title, price:p.price, qty:1});
-          updateCartUI();
-        }
-      })
-    }
-
-    // === Carrito ===
-    const cartDrawer = document.getElementById('cartDrawer');
-    const openCart = document.getElementById('openCart');
-    const closeCart = document.getElementById('closeCart');
-    const cartCount = document.getElementById('cartCount');
-    const cartItems = document.getElementById('cartItems');
-    const cartTotal = document.getElementById('cartTotal');
-
-    openCart.onclick = ()=> cartDrawer.classList.remove('closed');
-    closeCart.onclick = ()=> cartDrawer.classList.add('closed');
-
-    function updateCartUI(){
-      const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
-      cartCount.textContent = cart.reduce((s,i)=>s+i.qty,0);
-      cartTotal.textContent = fmt(total);
-      cartItems.innerHTML = cart.map(i=>`
-        <div class="flex items-center gap-3 p-3">
-          <div class="flex-1">
-            <div class="font-medium">${i.title}</div>
-            <div class="text-sm text-slate-600">${i.qty} × ${fmt(i.price)}</div>
-          </div>
-          <div class="flex items-center gap-2">
-            <button class="px-2 py-1 rounded border" data-act="dec" data-id="${i.id}">−</button>
-            <button class="px-2 py-1 rounded border" data-act="inc" data-id="${i.id}">+</button>
-            <button class="px-2 py-1 rounded border" data-act="del" data-id="${i.id}">🗑</button>
-          </div>
-        </div>
-      `).join('') || `<div class=\"p-6 text-center text-slate-500\">Tu carrito está vacío</div>`;
-      // Bind qty actions
-      cartItems.querySelectorAll('button').forEach(b=>{
-        b.onclick = ()=>{
-          const id = b.dataset.id; const act = b.dataset.act;
-          const item = cart.find(x=>x.id===id);
-          if(!item) return;
-          if(act==='inc') item.qty++;
-          if(act==='dec') item.qty = Math.max(1, item.qty-1);
-          if(act==='del') cart = cart.filter(x=>x.id!==id);
-          updateCartUI();
-        }
-      });
-      updateWhatsappLinks();
-    }
-
-    function buildWhatsappMessage(){
-      if(!cart.length) return `${STORE.name}: Hola!`; 
-      const lines = [
-        `Hola! Quiero hacer un pedido en *${STORE.name}*:
-`,
-        ...cart.map(i=>`• ${i.title} × ${i.qty} — ${fmt(i.price*i.qty)}`),
-        `
-Total: ${fmt(cart.reduce((s,i)=>s+i.price*i.qty,0))}`,
-        `
-Comuna/Región:`,
-        `
-Método de pago (transferencia/efectivo):`
-      ];
-      return encodeURIComponent(lines.join("
-"));
-    }
-
-    // WhatsApp buttons
-    const btnWhatsappTop = document.getElementById('btnWhatsappTop');
-    const btnWhatsappCart = document.getElementById('btnWhatsappCart');
-    const waLink = document.getElementById('waLink');
-
-    function updateWhatsappLinks(){
-      const url = `https://wa.me/${STORE.whatsappNumber}?text=${buildWhatsappMessage()}`;
-      if(btnWhatsappTop) btnWhatsappTop.href = url;
-      if(btnWhatsappCart) btnWhatsappCart.onclick = ()=>{ window.open(url, '_blank'); };
-      if(waLink){ waLink.href = `https://wa.me/${STORE.whatsappNumber}`; waLink.textContent = `+${STORE.whatsappNumber}`; }
-    }
-
-    // Navegación por menú superior (filtra por categoría)
-    document.querySelectorAll('nav [data-cat]').forEach(a=>{
-      a.addEventListener('click', (e)=>{
-        e.preventDefault();
-        const c = a.getAttribute('data-cat');
-        if(selCategory){ selCategory.value = c || ''; }
-        renderProducts();
-        window.scrollTo({ top: document.querySelector('#grid').offsetTop - 80, behavior:'smooth' });
-      });
-    });
-
-    // Inicializar
-    renderProducts();
-    updateCartUI();
-    updateWhatsappLinks();
-
-    // Eventos de filtros y búsqueda
-    if(inputSearch) inputSearch.addEventListener('input', renderProducts);
-    if(selCategory) selCategory.addEventListener('input', renderProducts);
-    if(selSort) selSort.addEventListener('input', renderProducts);
-  </script>
-</body>
+<!-- Controles adicionales -->
+<section class="max-w-6xl mx-auto px-4 mt-4">
+<div class="bg-white hm-card p-4 grid md:grid-cols-3 gap-3 items-end">
+<label class="block">
+<span class="text-sm font-medium">Ordenar</span>
+<select id="sort" class="mt-1 w-full rounded-xl border px-3 py-2">
+<option value="featured">Destacados</option>
 </html>
-
