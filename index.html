@@ -6,32 +6,21 @@
   <title>Happy Maydem 🐱✨ – Papelería & Fandom</title>
   <meta name="description" content="Papelería kawaii, fandom K-pop y anime. Compras por WhatsApp con retiro/ despacho.">
   <link rel="icon" href="https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f431.png" />
-  <!-- Tailwind (necesario para los estilos de clases) -->
   <script src="https://cdn.tailwindcss.com"></script>
-
   <style>
-    /* Identidad Happy Maydem – pasteles + Comic Sans */
-    :root{
-      --hm-bg:#ffe6f0;       /* rosado pastel fondo */
-      --hm-primary:#5a479e;  /* morado marca (barra superior/acentos) */
-      --hm-pink:#fdaecb;     /* rosado menú */
-      --hm-dashed:pink;      /* bordes dashed tarjetas */
-    }
+    :root{ --hm-bg:#ffe6f0; --hm-primary:#5a479e; --hm-pink:#fdaecb; --hm-dashed:pink; }
     body{ font-family:'Comic Sans MS', cursive, sans-serif; background:var(--hm-bg); }
     .hm-card{ border:2px dashed var(--hm-dashed); border-radius:14px; background:#fff }
-    .drawer{transition:transform .25s ease}
-    .drawer.closed{transform:translateX(100%)}
+    .drawer{transition:transform .25s ease}.drawer.closed{transform:translateX(100%)}
     .line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   </style>
 </head>
 
 <body class="text-slate-800">
-  <!-- Barra superior promo -->
   <div class="w-full text-center text-white text-sm py-2" style="background:var(--hm-primary)">
     📦 Aprovecha los <b>envíos gratis</b> por compras sobre <b>$30.000</b> en Stgo
   </div>
 
-  <!-- Encabezado: logo + redes + buscador -->
   <header class="bg-white">
     <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center gap-3 justify-between">
       <a href="/" class="flex items-center gap-3">
@@ -49,19 +38,18 @@
           <img src="https://img.icons8.com/ios-filled/50/000000/tiktok--v1.png" class="w-5 h-5" alt="TikTok">
         </a>
         <input id="search" type="search" placeholder="¿Qué quieres buscar?" class="px-3 py-2 rounded-full border-2" style="border-color:var(--hm-dashed)"/>
-        <button id="openCart" class="ml-1 px-4 py-2 rounded-full text-white font-semibold" style="background:var(--hm-primary)">
+        <button id="openCart" class="ml-1 px-4 py-2 rounded-full text-white font-semibold" style="background:#5a479e">
           🛒 Carrito <span id="cartCount" class="font-bold">0</span>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Banner -->
   <div class="banner">
     <img src="bannerdelgado.png" alt="Banner Happy Maydem" class="w-full block" onerror="this.style.display='none'">
   </div>
 
-  <!-- Menú navegación (filtra por categoría dentro de esta página) -->
+  <!-- Menú que filtra en esta misma página -->
   <nav class="w-full text-center py-3" style="background:var(--hm-pink)">
     <a href="#" data-cat="" class="mx-3 text-white font-bold hover:underline">INICIO</a>
     <a href="#" data-cat="Papelería" class="mx-3 text-white font-bold hover:underline">PAPELERÍA</a>
@@ -71,7 +59,6 @@
     <a href="#" data-cat="Anime" class="mx-3 text-white font-bold hover:underline">ANIME</a>
   </nav>
 
-  <!-- Controles + Grid -->
   <section class="max-w-6xl mx-auto px-4 mt-4">
     <div class="bg-white hm-card p-4 grid md:grid-cols-3 gap-3 items-end">
       <label class="block md:col-span-1">
@@ -88,11 +75,10 @@
       </div>
     </div>
 
-    <!-- AQUÍ VAN LAS TARJETAS -->
     <div id="grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 py-6"></div>
   </section>
 
-  <!-- ===== CARRITO (drawer) ===== -->
+  <!-- Carrito -->
   <aside id="cartDrawer" class="fixed top-0 right-0 w-full max-w-md h-full bg-white border-l border-slate-200 shadow-xl drawer closed z-50">
     <div class="h-full flex flex-col">
       <div class="px-4 py-3 border-b flex items-center gap-3">
@@ -101,130 +87,55 @@
       </div>
       <div id="cartItems" class="flex-1 overflow-auto divide-y"></div>
       <div class="p-4 border-t space-y-2">
-        <div class="flex justify-between font-semibold">
-          <span>Total</span><span id="cartTotal">$0</span>
-        </div>
-        <button id="btnWhatsappCart" class="w-full px-4 py-2 rounded-xl text-white font-semibold hover:opacity-90" style="background:#5a479e">
-          Enviar pedido por WhatsApp
-        </button>
+        <div class="flex justify-between font-semibold"><span>Total</span><span id="cartTotal">$0</span></div>
+        <button id="btnWhatsappCart" class="w-full px-4 py-2 rounded-xl text-white font-semibold hover:opacity-90" style="background:#5a479e">Enviar pedido por WhatsApp</button>
         <p class="text-xs text-slate-500">No pagas aquí. Te contactamos por WhatsApp para coordinar pago y envío.</p>
       </div>
     </div>
   </aside>
 
-  <!-- ======= SCRIPTS (al final, así el DOM ya existe) ======= -->
   <script>
-    // === CONFIG BÁSICA ===
-    const STORE = {
-      name: "Happy Maydem",
-      whatsappNumber: "56995733148", // tu número (sin + ni espacios)
-      currency: "$",
-      freeShippingThreshold: 30000,
-    };
+    // ---------- CONFIG ----------
+    const STORE = { name:"Happy Maydem", whatsappNumber:"56995733148", currency:"$", freeShippingThreshold:30000 };
 
-    /* === HM_CART: carrito con localStorage + WhatsApp === */
+    // ---------- CARRITO ----------
     (function(){
-      const LS_KEY = 'hm_cart_v1';
-      const load = () => JSON.parse(localStorage.getItem(LS_KEY) || '[]');
-      const save = c => localStorage.setItem(LS_KEY, JSON.stringify(c));
-      const fmt  = n => STORE.currency + n.toLocaleString('es-CL');
-
-      const api = {
-        add({id,title,price,qty=1}) {
-          const c = load();
-          const f = c.find(i => i.id === id);
-          if (f) f.qty += qty; else c.push({id,title,price,qty});
-          save(c); api.render();
-        },
-        get(){ return load(); },
-        count(){ return load().reduce((s,i)=>s+i.qty,0); },
-        total(){ return load().reduce((s,i)=>s+i.price*i.qty,0); },
-        clear(){ save([]); api.render(); },
-        fmt,
-        whatsAppURL(){
-          const cart = load();
-          const lines = cart.length ? [
-            `Hola! Quiero hacer un pedido en *${STORE.name}*:`,
-            ...cart.map(i=>`• ${i.title} × ${i.qty} — ${fmt(i.price*i.qty)}`),
-            ``,
-            `Total: ${fmt(api.total())}`,
-            ``,
-            `Comuna/Región:`,
-            `Método de pago (transferencia/efectivo):`
-          ] : [`Hola!`];
-          return `https://wa.me/${STORE.whatsappNumber}?text=${encodeURIComponent(lines.join('\n'))}`;
-        },
-        render(){
-          const countEl = document.getElementById('cartCount');
-          if (countEl) countEl.textContent = api.count();
-
-          const itemsEl = document.getElementById('cartItems');
-          const totalEl = document.getElementById('cartTotal');
-          const cart = load();
-
-          if (itemsEl && totalEl){
-            totalEl.textContent = fmt(api.total());
-            itemsEl.innerHTML = cart.length ? cart.map(i=>`
-              <div class="flex items-center gap-3 p-3">
-                <div class="flex-1">
-                  <div class="font-medium">${i.title}</div>
-                  <div class="text-sm text-slate-600">${i.qty} × ${fmt(i.price)}</div>
-                </div>
-                <div class="flex items-center gap-2">
-                  <button class="px-2 py-1 rounded border" data-act="dec" data-id="${i.id}">−</button>
-                  <button class="px-2 py-1 rounded border" data-act="inc" data-id="${i.id}">+</button>
-                  <button class="px-2 py-1 rounded border" data-act="del" data-id="${i.id}">🗑</button>
-                </div>
-              </div>
-            `).join('') : `<div class="p-6 text-center text-slate-500">Tu carrito está vacío</div>`;
-
-            // acciones cantidad / borrar
-            itemsEl.querySelectorAll('button').forEach(b=>{
-              b.onclick = ()=>{
-                const id = b.dataset.id, act = b.dataset.act;
-                const c = load(); const it = c.find(x=>x.id===id); if(!it) return;
-                if (act==='inc') it.qty++;
-                if (act==='dec') it.qty = Math.max(1, it.qty-1);
-                if (act==='del') c.splice(c.findIndex(x=>x.id===id),1);
-                save(c); api.render();
-              };
-            });
-          }
-
-          const btnCart = document.getElementById('btnWhatsappCart');
-          if (btnCart) btnCart.onclick = ()=> window.open(api.whatsAppURL(), '_blank');
-        }
+      const LS_KEY='hm_cart_v1';
+      const load=()=>JSON.parse(localStorage.getItem(LS_KEY)||'[]');
+      const save=c=>localStorage.setItem(LS_KEY,JSON.stringify(c));
+      const fmt=n=>STORE.currency+n.toLocaleString('es-CL');
+      const api={
+        add({id,title,price,qty=1}){const c=load();const f=c.find(i=>i.id===id); if(f)f.qty+=qty; else c.push({id,title,price,qty}); save(c); api.render();},
+        count(){return load().reduce((s,i)=>s+i.qty,0);},
+        total(){return load().reduce((s,i)=>s+i.price*i.qty,0);},
+        whatsAppURL(){const cart=load();const lines=cart.length?[`Hola! Quiero hacer un pedido en *${STORE.name}*:`,...cart.map(i=>`• ${i.title} × ${i.qty} — ${fmt(i.price*i.qty)}`),``,`Total: ${fmt(api.total())}`,``,`Comuna/Región:`,`Método de pago (transferencia/efectivo):`]:[`Hola!`];return `https://wa.me/${STORE.whatsappNumber}?text=${encodeURIComponent(lines.join('\n'))}`;},
+        render(){const cc=document.getElementById('cartCount'); if(cc) cc.textContent=api.count(); const items=document.getElementById('cartItems'); const total=document.getElementById('cartTotal'); if(items&&total){const cart=load(); total.textContent=fmt(api.total()); items.innerHTML=cart.length?cart.map(i=>`<div class="flex items-center gap-3 p-3"><div class="flex-1"><div class="font-medium">${i.title}</div><div class="text-sm text-slate-600">${i.qty} × ${fmt(i.price)}</div></div><div class="flex items-center gap-2"><button class="px-2 py-1 rounded border" data-act="dec" data-id="${i.id}">−</button><button class="px-2 py-1 rounded border" data-act="inc" data-id="${i.id}">+</button><button class="px-2 py-1 rounded border" data-act="del" data-id="${i.id}">🗑</button></div></div>`).join(''):`<div class="p-6 text-center text-slate-500">Tu carrito está vacío</div>`; items.querySelectorAll('button').forEach(b=>{b.onclick=()=>{const id=b.dataset.id,act=b.dataset.act;const c=load();const it=c.find(x=>x.id===id);if(!it)return;if(act==='inc')it.qty++;if(act==='dec')it.qty=Math.max(1,it.qty-1);if(act==='del')c.splice(c.findIndex(x=>x.id===id),1);save(c);api.render();};});} const btn=document.getElementById('btnWhatsappCart'); if(btn) btn.onclick=()=>window.open(api.whatsAppURL(),'_blank');}
       };
-
-      window.HM_CART = api;
-
-      // abrir/cerrar cajón
-      window.addEventListener('DOMContentLoaded', ()=>{
-        const openBtn = document.getElementById('openCart');
-        const closeBtn = document.getElementById('closeCart');
-        const drawer  = document.getElementById('cartDrawer');
-        if (openBtn && drawer) openBtn.onclick = ()=> drawer.classList.remove('closed');
-        if (closeBtn && drawer) closeBtn.onclick = ()=> drawer.classList.add('closed');
-        api.render(); // pintar contador al cargar
-      });
+      window.HM_CART=api;
+      window.addEventListener('DOMContentLoaded',()=>{const o=document.getElementById('openCart'),c=document.getElementById('closeCart'),d=document.getElementById('cartDrawer'); if(o&&d) o.onclick=()=>d.classList.remove('closed'); if(c&&d) c.onclick=()=>d.classList.add('closed'); api.render();});
     })();
 
-    // === LISTA DE PRODUCTOS (usa IDs ÚNICOS) ===
+    // ---------- DATOS ----------
     const ALL_PRODUCTS = [
-      { id: "bt21-a5", title: "Libreta BT21 A5", price: 5000, image: "Libreta Bt21.png", category: "Papelería", tags: ["libreta","bt21"], featured: true },
-      { id: "lovelys", title: "Peluches Lovelys Twice Summer (Alternativos)", price: 4000, image: "Lovelys.JPG", category: "Peluches", tags: ["twice","peluche"], featured: false },
-      { id: "Note-Huntrix", title: "Cuaderno A6 Huntrix", price: 4000, image: "Note_Huntrix.png", category: "Papelería", tags: ["libreta","cuaderno","kpop demon hunters", "huntrix"], featured: true },
+      { id:"bt21-a5", title:"Libreta BT21 A5", price:5000, image:"Libreta Bt21.png", category:"Papelería", tags:["libreta","bt21"], featured:true },
+      { id:"lovelys", title:"Peluches Lovelys Twice Summer (Alternativos)", price:4000, image:"Lovelys.JPG", category:"Peluches", tags:["twice","peluche"], featured:false },
+      { id:"note-huntrix-a6", title:"Cuaderno A6 Huntrix", price:4000, image:"Note_Huntrix.png", category:"Papelería", tags:["libreta","cuaderno","huntrix"], featured:true }
     ];
 
-    // Estado de categoría (por menú)
-    let ACTIVE_CATEGORY = "";
+    // ---------- UI / RENDER ----------
+    const HOME_MAX = 9; // máximo de destacados en el home
+    let ACTIVE_CATEGORY = ""; // vacío = home
 
-    // Elementos
     const inputSearch = document.getElementById('search');
     const selSort = document.getElementById('sort');
     const grid = document.getElementById('grid');
 
-    // Utils
+    const slug = s => (s||'')
+      .toString()
+      .toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'') // sin acentos
+      .replace(/[^a-z0-9]+/g,'');                     // sin guiones/espacios
+
     const fmtPrice = n => STORE.currency + n.toLocaleString('es-CL');
 
     function cardHTML(p){
@@ -240,24 +151,40 @@
         </article>`;
     }
 
-    function emptyHTML(){
-      return `<div class="text-center text-slate-600 py-16">No encontramos productos 😿</div>`;
-    }
+    function emptyHTML(){ return `<div class="text-center text-slate-600 py-16">No encontramos productos 😿</div>`; }
 
     function getProducts(){
       let list = [...ALL_PRODUCTS];
-      if (ACTIVE_CATEGORY) list = list.filter(p => p.category === ACTIVE_CATEGORY);
+
+      // Filtro por categoría (tolerante a acentos/guiones)
+      if (ACTIVE_CATEGORY){
+        const wanted = slug(ACTIVE_CATEGORY);
+        list = list.filter(p => slug(p.category) === wanted);
+      }
+
+      // Búsqueda
       const q = (inputSearch?.value || '').trim().toLowerCase();
-      if (q) list = list.filter(p =>
-        p.title.toLowerCase().includes(q) ||
-        (p.tags||[]).some(t => t.toLowerCase().includes(q))
-      );
+      if (q){
+        const qn = slug(q);
+        list = list.filter(p =>
+          slug(p.title).includes(qn) ||
+          (p.tags||[]).some(t => slug(t).includes(qn))
+        );
+      }
+
+      // Orden
       switch (selSort?.value) {
         case 'price_asc':  list.sort((a,b)=>a.price-b.price); break;
         case 'price_desc': list.sort((a,b)=>b.price-a.price); break;
         case 'az':         list.sort((a,b)=>a.title.localeCompare(b.title)); break;
         default:           list.sort((a,b)=>Number(b.featured)-Number(a.featured));
       }
+
+      // Home: si NO hay categoría NI búsqueda → solo destacados
+      if (!ACTIVE_CATEGORY && !q) {
+        list = list.filter(p => p.featured).slice(0, HOME_MAX);
+      }
+
       return list;
     }
 
@@ -265,22 +192,21 @@
       const list = getProducts();
       grid.innerHTML = list.length ? list.map(cardHTML).join('') : emptyHTML();
 
-      // Botón "Añadir" (carrito)
       grid.querySelectorAll('.btn-add').forEach(btn=>{
         btn.onclick = ()=>{
           const p = ALL_PRODUCTS.find(x => x.id === btn.dataset.id);
-          HM_CART.add({ id: p.id, title: p.title, price: p.price, qty: 1 });
+          if (p) HM_CART.add({ id:p.id, title:p.title, price:p.price, qty:1 });
         };
       });
     }
 
-    // Menú: filtra por categoría
+    // Menú
     document.querySelectorAll('nav [data-cat]').forEach(a=>{
       a.addEventListener('click', (e)=>{
         e.preventDefault();
         ACTIVE_CATEGORY = a.getAttribute('data-cat') || "";
         renderProducts();
-        window.scrollTo({ top: grid.offsetTop - 80, behavior: 'smooth' });
+        window.scrollTo({ top: grid.offsetTop - 80, behavior:'smooth' });
       });
     });
 
@@ -293,3 +219,4 @@
   </script>
 </body>
 </html>
+
