@@ -1,70 +1,154 @@
 <!doctype html>
-</div>
-<div class="flex items-center gap-2">
-<button class="px-2 py-1 rounded border" data-act="dec" data-id="${i.id}">−</button>
-<button class="px-2 py-1 rounded border" data-act="inc" data-id="${i.id}">+</button>
-<button class="px-2 py-1 rounded border" data-act="del" data-id="${i.id}">🗑</button>
-</div>
-</div>
-`).join('') || `<div class="p-6 text-center text-slate-500">Tu carrito está vacío</div>`;
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Papelería – Happy Maydem 🐱✨</title>
+  <meta name="description" content="Papelería kawaii: libretas, lápices, stickers y más.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{ --hm-bg:#ffe6f0; --hm-primary:#5a479e; --hm-pink:#fdaecb; --hm-dashed:pink; }
+    body{ font-family:'Comic Sans MS', cursive, sans-serif; background:var(--hm-bg); color:#334155 }
+    .hm-card{ border:2px dashed var(--hm-dashed); border-radius:14px; background:#fff }
+    .drawer{transition:transform .25s ease}.drawer.closed{transform:translateX(100%)}
+    .line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  </style>
+</head>
+<body>
+  <div class="w-full text-center text-white text-sm py-2" style="background:var(--hm-primary)">📚 Papelería kawaii</div>
 
+  <header class="bg-white">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center gap-3 justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="logo.png" class="h-16 md:h-20" onerror="this.style.display='none'"/>
+        <span class="text-2xl md:text-3xl font-black">Happy Maydem 🐱✨</span>
+      </a>
+      <div class="flex items-center gap-3">
+        <input id="search" type="search" placeholder="Buscar en papelería…" class="px-3 py-2 rounded-full border-2" style="border-color:var(--hm-dashed)"/>
+        <button id="openCart" class="px-4 py-2 rounded-full text-white font-semibold" style="background:var(--hm-primary)">🛒 Carrito <span id="cartCount">0</span></button>
+      </div>
+    </div>
+  </header>
 
-cartItems.querySelectorAll('button').forEach(b=>{
-b.onclick = ()=>{
-const id = b.dataset.id; const act = b.dataset.act;
-const item = cart.find(x=>x.id===id);
-if(!item) return;
-if(act==='inc') item.qty++;
-if(act==='dec') item.qty = Math.max(1, item.qty-1);
-if(act==='del') cart = cart.filter(x=>x.id!==id);
-saveCart(); updateCartUI();
-}
-});
+  <nav class="w-full text-center py-3" style="background:var(--hm-pink)">
+    <a href="index.html" class="mx-3 text-white font-bold">INICIO</a>
+    <a href="papeleria.html" class="mx-3 text-white font-bold underline">PAPELERÍA</a>
+    <a href="peluches.html" class="mx-3 text-white font-bold">PELUCHES</a>
+    <a href="accesorios.html" class="mx-3 text-white font-bold">ACCESORIOS</a>
+    <a href="kpop.html" class="mx-3 text-white font-bold">KPOP</a>
+    <a href="anime.html" class="mx-3 text-white font-bold">ANIME</a>
+  </nav>
 
+  <main class="max-w-6xl mx-auto px-4 py-6">
+    <div class="bg-white hm-card p-4 grid md:grid-cols-3 gap-3 items-end">
+      <label class="block">
+        <span class="text-sm font-medium">Ordenar</span>
+        <select id="sort" class="mt-1 w-full rounded-xl border px-3 py-2">
+          <option value="featured">Destacados</option>
+          <option value="price_asc">Precio: menor a mayor</option>
+          <option value="price_desc">Precio: mayor a menor</option>
+          <option value="az">A → Z</option>
+        </select>
+      </label>
+    </div>
 
-updateWhatsappLinks();
-}
+    <div id="grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4"></div>
+  </main>
 
+  <!-- Drawer carrito (igual que index) -->
+  <aside id="cartDrawer" class="fixed top-0 right-0 w-full max-w-md h-full bg-white border-l shadow-xl drawer closed z-50">
+    <div class="h-full flex flex-col">
+      <div class="px-4 py-3 border-b flex items-center gap-3"><button id="closeCart" class="text-xl">✖</button><h2 class="font-bold text-lg">Tu carrito</h2></div>
+      <div id="cartItems" class="flex-1 overflow-auto divide-y"></div>
+      <div class="p-4 border-t space-y-2">
+        <div class="flex justify-between font-semibold"><span>Total</span><span id="cartTotal">$0</span></div>
+        <button id="btnWhatsappCart" class="w-full px-4 py-2 rounded-xl text-white font-semibold hover:opacity-90" style="background:#5a479e">Enviar pedido por WhatsApp</button>
+      </div>
+    </div>
+  </aside>
 
-function buildWhatsappMessage(){
-if(!cart.length) return `${STORE.name}: Hola!`;
-const lines = [
-`Hola! Quiero hacer un pedido en *${STORE.name}* (Papelería):
-`,
-...cart.map(i=>`• ${i.title} × ${i.qty} — ${fmt(i.price*i.qty)}`),
-`
-Total: ${fmt(cart.reduce((s,i)=>s+i.price*i.qty,0))}`,
-`
-Comuna/Región:`,
-`
-Método de pago (transferencia/efectivo):`
-];
-return encodeURIComponent(lines.join('
-'));
-}
+  <script>
+    // === CONFIG (mismo número que en index) ===
+    const STORE = { name: "Happy Maydem", whatsappNumber: "56995733148", currency: "$" };
 
+    // === Carrito compartido (mismo que en index) ===
+    (function(){
+      const LS_KEY='hm_cart_v1', load=()=>JSON.parse(localStorage.getItem(LS_KEY)||'[]'), save=c=>localStorage.setItem(LS_KEY,JSON.stringify(c));
+      const fmt=n=>STORE.currency+n.toLocaleString('es-CL');
+      const api={
+        add({id,title,price,qty=1}){const c=load();const f=c.find(i=>i.id===id); if(f)f.qty+=qty; else c.push({id,title,price,qty}); save(c); api.render();},
+        count(){return load().reduce((s,i)=>s+i.qty,0);},
+        total(){return load().reduce((s,i)=>s+i.price*i.qty,0);},
+        whatsAppURL(){const cart=load();const lines=cart.length?[`Hola! Quiero hacer un pedido en *${STORE.name}*:`,...cart.map(i=>`• ${i.title} × ${i.qty} — ${fmt(i.price*i.qty)}`),``,`Total: ${fmt(api.total())}`,``,`Comuna/Región:`,`Método de pago (transferencia/efectivo):`]:[`Hola!`];return `https://wa.me/${STORE.whatsappNumber}?text=${encodeURIComponent(lines.join('\\n'))}`;},
+        render(){const cc=document.getElementById('cartCount'); if(cc) cc.textContent=api.count(); const items=document.getElementById('cartItems'); const total=document.getElementById('cartTotal'); if(items&&total){const cart=load(); total.textContent=fmt(api.total()); items.innerHTML=cart.length?cart.map(i=>`<div class="flex items-center gap-3 p-3"><div class="flex-1"><div class="font-medium">${i.title}</div><div class="text-sm text-slate-600">${i.qty} × ${fmt(i.price)}</div></div><div class="flex items-center gap-2"><button class="px-2 py-1 rounded border" data-act="dec" data-id="${i.id}">−</button><button class="px-2 py-1 rounded border" data-act="inc" data-id="${i.id}">+</button><button class="px-2 py-1 rounded border" data-act="del" data-id="${i.id}">🗑</button></div></div>`).join(''):`<div class="p-6 text-center text-slate-500">Tu carrito está vacío</div>`; items.querySelectorAll('button').forEach(b=>{b.onclick=()=>{const id=b.dataset.id,act=b.dataset.act;const c=load();const it=c.find(x=>x.id===id);if(!it)return;if(act==='inc')it.qty++;if(act==='dec')it.qty=Math.max(1,it.qty-1);if(act==='del')c.splice(c.findIndex(x=>x.id===id),1);save(c);api.render();};});} const btn=document.getElementById('btnWhatsappCart'); if(btn) btn.onclick=()=>window.open(api.whatsAppURL(),'_blank');}
+      };
+      window.HM_CART=api;
+      window.addEventListener('DOMContentLoaded',()=>{const o=document.getElementById('openCart'),c=document.getElementById('closeCart'),d=document.getElementById('cartDrawer'); if(o&&d) o.onclick=()=>d.classList.remove('closed'); if(c&&d) c.onclick=()=>d.classList.add('closed'); api.render();});
+    })();
 
-const btnWhatsappTop = document.getElementById('btnWhatsappTop');
-const btnWhatsappCart = document.getElementById('btnWhatsappCart');
+    // === SOLO PAPELERÍA ===
+    const ALL_PRODUCTS = [
+      { id:'bt21-a5', title:'Libreta BT21 A5', price:5000, image:'Libreta Bt21.png', category:'Papelería', tags:['libreta','bt21'], featured:true },
+      { id: "Note-Huntrix", title: "Cuaderno A6 Huntrix", price: 4000, image: "Note_Huntrix.png", category: "Papelería", tags: ["libreta","cuaderno","kpop demon hunters", "huntrix", "saja boys"], featured: true },
+      { id: "Note-Rumi", title: "Cuaderno A6 Rumi", price: 4000, image: "Note_Rumi.png", category: "Papelería", tags: ["libreta","cuaderno","kpop demon hunters", "huntrix", "saja boys"], featured: true },
+      { id: "Note-Zoey", title: "Cuaderno A6 Zoey", price: 4000, image: "Note_Zoey.png", category: "Papelería", tags: ["libreta","cuaderno","kpop demon hunters", "huntrix", "saja boys"], featured: true },
+      { id: "Note-Mira", title: "Cuaderno A6 Mira", price: 4000, image: "Note_Mira.png", category: "Papelería", tags: ["libreta","cuaderno","kpop demon hunters", "huntrix", "saja boys"], featured: true },
+      { id: "Note-Sajaboys", title: "Cuaderno A6 Saja Boys", price: 4000, image: "Note_Sajaboys.png", category: "Papelería", tags: ["libreta","cuaderno","kpop demon hunters", "huntrix", "saja boys"], featured: true },
+      { id: "Note-Chari", title: "Cuaderno A6 Charizard", price: 4000, image: "Chari.png", category: "Papelería", tags: ["libreta","cuaderno","Pokemon"], featured: true },
+      { id: "Note-Charizard", title: "Cuaderno A6 Charizard 2", price: 4000, image: "Charizard.png", category: "Papelería", tags: ["libreta","cuaderno","pokemon"], featured: true },    
+      { id: "Note-Gengar", title: "Cuaderno A6 Gengar", price: 4000, image: "Gengar.png", category: "Papelería", tags: ["libreta","cuaderno","pokemon"], featured: true },
+      { id: "Note-Sylveon", title: "Cuaderno A6 Sylveon", price: 4000, image: "Pokemon1.png", category: "Papelería", tags: ["libreta","cuaderno","pokemon"], featured: true },
+      { id: "Note-Chopper", title: "Cuaderno A6 Chopper", price: 4000, image: "Chopper.png", category: "Papelería", tags: ["libreta","cuaderno","one piece"], featured: true },
+      { id: "Note-Chopper1", title: "Cuaderno A6 Chopper", price: 4000, image: "Note_Chopper1.png", category: "Papelería", tags: ["libreta","cuaderno","one piece"], featured: true },
+      { id: "Note-Chopper2", title: "Cuaderno A6 Chopper", price: 4000, image: "NoteChopper2.png", category: "Papelería", tags: ["libreta","cuaderno","one pice"], featured: true },
+      { id: "Note-Frieren", title: "Cuaderno A6 Frieren", price: 4000, image: "Frieren.png", category: "Papelería", tags: ["libreta","cuaderno","Frieren"], featured: true },    
+      { id: "Note-MaoMao", title: "Cuaderno A6 Mao Mao", price: 4000, image: "MaoMao.png", category: "Papelería", tags: ["libreta","cuaderno","Boticaria", "Los diarios de la boticaria"], featured: true },
+      { id: "Note-Jinshi", title: "Cuaderno A6 Jinshi y Mao Mao", price: 4000, image: "Jinshi.png", category: "Papelería", tags: ["libreta","cuaderno","boticaria", "Los diarios de la boticaria"], featured: true },
+      { id: "Note-OkarunKawaii", title: "Cuaderno A6 Okarun Kawaii", price: 4000, image: "Okarun_kawaii.png", category: "Papelería", tags: ["libreta","cuaderno","dandadan"], featured: true },
+      { id: "Note-Okarun", title: "Cuaderno A6 Okarun", price: 4000, image: "Okarun.png", category: "Papelería", tags: ["libreta","cuaderno","dandadan"], featured: true },
+      { id: "Note-Momo", title: "Cuaderno A6 Momo", price: 4000, image: "Momo.png", category: "Papelería", tags: ["libreta","cuaderno","dandadan"], featured: true },
+      { id: "Note-TurboAbuela", title: "Cuaderno A6 Turbo Abuela", price: 4000, image: "Turbo_Abuela.png", category: "Papelería", tags: ["libreta","cuaderno","dandadan"], featured: true },
+      { id: "Note-Jujutsu", title: "Cuaderno A6 Jujutsu Kaisen", price: 4000, image: "Jujutsu.png", category: "Papelería", tags: ["libreta","cuaderno","jujutsu kaisen"], featured: true },
+    ];
 
+    const search = document.getElementById('search');
+    const sort = document.getElementById('sort');
+    const grid = document.getElementById('grid');
+    const fmt = n => STORE.currency + n.toLocaleString('es-CL');
 
-function updateWhatsappLinks(){
-const url = `https://wa.me/${STORE.whatsappNumber}?text=${buildWhatsappMessage()}`;
-if(btnWhatsappTop) btnWhatsappTop.href = url;
-if(btnWhatsappCart) btnWhatsappCart.onclick = ()=> window.open(url,'_blank');
-}
+    function cardHTML(p){ return `
+      <article class="hm-card overflow-hidden shadow-sm hover:shadow transition">
+        <img src="${p.image}" alt="${p.title}" class="w-full h-48 object-cover"/>
+        <div class="p-4 space-y-2 text-center">
+          <h3 class="font-semibold line-clamp-2">${p.title}</h3>
+          <div class="text-slate-600 text-sm">${p.category}</div>
+          <div class="font-bold">${fmt(p.price)}</div>
+          <button data-id="${p.id}" class="btn-add w-full px-4 py-2 rounded-xl text-white font-semibold" style="background:#5a479e">Añadir al carrito</button>
+        </div>
+      </article>`; }
 
+    function render(){
+      const q = (search?.value||'').toLowerCase().trim();
+      let list = ALL_PRODUCTS.filter(p => !q || p.title.toLowerCase().includes(q) || (p.tags||[]).some(t=>t.includes(q)));
+      switch (sort?.value){
+        case 'price_asc':  list.sort((a,b)=>a.price-b.price); break;
+        case 'price_desc': list.sort((a,b)=>b.price-a.price); break;
+        case 'az':         list.sort((a,b)=>a.title.localeCompare(b.title)); break;
+        default:           list.sort((a,b)=>Number(b.featured)-Number(a.featured));
+      }
+      grid.innerHTML = list.map(cardHTML).join('') || `<div class="text-center text-slate-600 py-16">No encontramos productos 😿</div>`;
+      grid.querySelectorAll('.btn-add').forEach(btn=>{
+        btn.onclick = ()=>{
+          const p = ALL_PRODUCTS.find(x=>x.id===btn.dataset.id);
+          HM_CART.add({ id:p.id, title:p.title, price:p.price, qty:1 });
+        };
+      });
+    }
 
-// Eventos
-document.querySelectorAll('input[name="precio"]').forEach(r=> r.addEventListener('change', render));
-document.querySelectorAll('.tipo').forEach(c=> c.addEventListener('change', render));
-if(inputSearch) inputSearch.addEventListener('input', render);
-if(sortSel) sortSel.addEventListener('input', render);
-
-
-// Init
-document.getElementById('year').textContent = new Date().getFullYear();
-render(); updateCartUI(); updateWhatsappLinks();
-</script>
+    render();
+    search?.addEventListener('input', render);
+    sort?.addEventListener('input', render);
+  </script>
 </body>
 </html>
+
