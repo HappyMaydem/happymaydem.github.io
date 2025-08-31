@@ -1,164 +1,70 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Papelería - Happy Maydem</title>
-  <link rel="icon" href="" type="image/x-icon">
-  <style>
-    body {
-      font-family: 'Comic Sans MS', cursive;
-      margin: 0;
-      background-color: #fff5fa;
-    }
-
-    .nav {
-      background-color: #fdaecb;
-      text-align: center;
-      padding: 10px 0;
-    }
-
-    .nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 15px;
-      font-weight: bold;
-    }
-
-    .container {
-      display: flex;
-    }
-
-    .sidebar {
-      width: 220px;
-      background-color: #f3e5f5;
-      padding: 20px;
-      border-right: 2px dashed pink;
-      height: 100vh;
-    }
-
-    .sidebar h3 {
-      margin-top: 0;
-      color: #824ba6;
-    }
-
-    .sidebar label {
-      display: block;
-      margin: 5px 0;
-    }
-
-    .products {
-      flex: 1;
-      padding: 30px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    .product {
-      width: 180px;
-      padding: 10px;
-      background-color: white;
-      text-align: center;
-      border-radius: 8px;
-      border: 2px dashed pink;
-      position: relative;
-    }
-
-    .product img {
-      width: 100%;
-      border-radius: 2px;
-    }
-
-    .agotado::after {
-      content: "AGOTADO";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background-color: rgba(0,0,0,0.6);
-      color: white;
-      font-weight: bold;
-      font-size: 16px;
-      padding: 5px 0;
-    }
-  </style>
-</head>
-<body>
-<img src="bannerdelgado.png" alt="Banner Happy Maydem" style="width: 100%; display: block;">
-<!-- Menú de navegación -->
-<div class="nav">
-  <a href="index.html">INICIO</a>
-  <a href="papeleria.html">PAPELERÍA</a>
-  <a href="peluches.html">PELUCHES</a>
-  <a href="accesorios.html">ACCESORIOS</a>
-  <a href="kpop.html">K-POP</a>
-  <a href="anime.html">ANIME</a>
+<!doctype html>
 </div>
-  
-<!-- Contenido principal -->
-<div class="container">
-  <div class="sidebar">
-    <h3>PAPELERIA</h3>
-    <strong>Filtrar</strong><br><br>
-    <p><strong>Precio</strong></p>
-    <label><input type="radio" name="precio"> Hasta $1.500</label>
-    <label><input type="radio" name="precio"> $1.500 a $3.000</label>
-    <label><input type="radio" name="precio"> $3.000 a $5.000</label>
-    <label><input type="radio" name="precio"> $5.000 a $10.000</label>
-
-    <p><strong>Tipo de Producto</strong></p>
-    <label><input type="checkbox"> Libretas</label>
-    <label><input type="checkbox"> Binders</label>
-    <label><input type="checkbox"> Lápices</label>
-    <label><input type="checkbox"> Stickers</label>
-  </div>
-
-  <div class="products">
-    <div class="product">
-      <img src="lapis mina infinito garrita.jpg" alt="Lápiz mina infinito garrita">
-      <p>Lápiz mina infinito garrita</p>
-      <strong>$2.000</strong>
-    </div>
-
-    <div class="product">
-      <img src="lapiz multicolor capibara.png" alt="Lápiz multicolor capibara">
-      <p>Lápiz Multicolor Capibara</p>
-      <strong>$2.200</strong>
-    </div>
-
-    <div class="product">
-      <img src="lapiz multicolor capybara.jpeg" alt="Lápiz multicolor capybara">
-      <p>Lápiz Multicolor Capybara</p>
-      <strong>$2.200</strong>
-    </div>
-
-    <div class="product">
-      <img src="lapiz multicolor cat in bloom.png" alt="Lapiz multicolor cat in bloom">
-      <p>Lápiz Multicolor Cat in Bloom</p>
-      <strong>$2.200</strong>
-    </div>
-
-    <div class="product">
-      <img src="lapiz multicolor cats diary.jpg" alt="Lapiz multicolor cats diary">
-      <p>Lápiz Multicolor Cats Diary</p>
-      <strong>$2.200</strong>
-    </div>
-
-     <div class="product">
-      <img src="Libreta Bt21.png" alt="Libreta BT21 A5">
-      <p>Libreta BT21 A5</p>
-      <strong>$5.000</strong>
-    </div>
-
-    <div class ="product">
-      <img src="IMG_20250605_125924266.jpg" alt="Libreta Mao Mao"
-      <p>Libreta Mao Mao A5</p>
-      <strong>$4.000</strong>
-    </div>
-
-  </div>
+<div class="flex items-center gap-2">
+<button class="px-2 py-1 rounded border" data-act="dec" data-id="${i.id}">−</button>
+<button class="px-2 py-1 rounded border" data-act="inc" data-id="${i.id}">+</button>
+<button class="px-2 py-1 rounded border" data-act="del" data-id="${i.id}">🗑</button>
 </div>
+</div>
+`).join('') || `<div class="p-6 text-center text-slate-500">Tu carrito está vacío</div>`;
 
+
+cartItems.querySelectorAll('button').forEach(b=>{
+b.onclick = ()=>{
+const id = b.dataset.id; const act = b.dataset.act;
+const item = cart.find(x=>x.id===id);
+if(!item) return;
+if(act==='inc') item.qty++;
+if(act==='dec') item.qty = Math.max(1, item.qty-1);
+if(act==='del') cart = cart.filter(x=>x.id!==id);
+saveCart(); updateCartUI();
+}
+});
+
+
+updateWhatsappLinks();
+}
+
+
+function buildWhatsappMessage(){
+if(!cart.length) return `${STORE.name}: Hola!`;
+const lines = [
+`Hola! Quiero hacer un pedido en *${STORE.name}* (Papelería):
+`,
+...cart.map(i=>`• ${i.title} × ${i.qty} — ${fmt(i.price*i.qty)}`),
+`
+Total: ${fmt(cart.reduce((s,i)=>s+i.price*i.qty,0))}`,
+`
+Comuna/Región:`,
+`
+Método de pago (transferencia/efectivo):`
+];
+return encodeURIComponent(lines.join('
+'));
+}
+
+
+const btnWhatsappTop = document.getElementById('btnWhatsappTop');
+const btnWhatsappCart = document.getElementById('btnWhatsappCart');
+
+
+function updateWhatsappLinks(){
+const url = `https://wa.me/${STORE.whatsappNumber}?text=${buildWhatsappMessage()}`;
+if(btnWhatsappTop) btnWhatsappTop.href = url;
+if(btnWhatsappCart) btnWhatsappCart.onclick = ()=> window.open(url,'_blank');
+}
+
+
+// Eventos
+document.querySelectorAll('input[name="precio"]').forEach(r=> r.addEventListener('change', render));
+document.querySelectorAll('.tipo').forEach(c=> c.addEventListener('change', render));
+if(inputSearch) inputSearch.addEventListener('input', render);
+if(sortSel) sortSel.addEventListener('input', render);
+
+
+// Init
+document.getElementById('year').textContent = new Date().getFullYear();
+render(); updateCartUI(); updateWhatsappLinks();
+</script>
 </body>
 </html>
