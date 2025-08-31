@@ -8,7 +8,75 @@
 <!-- Favicon: reemplaza por tu logo si quieres -->
 <link rel="icon" href="https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f431.png" />
 <!-- Tailwind para layout rápido (CDN) -->
-<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  // === CONFIG BÁSICA ===
+  const STORE = {
+    name: "Happy Maydem",
+    whatsappNumber: "569XXXXXXXX", // tu número sin + ni espacios
+    currency: "$",
+    freeShippingThreshold: 30000,
+  };
+
+  // === LISTA DE PRODUCTOS (prueba mínima) ===
+  const PRODUCTS = [
+    { id: "bt21-a5", title: "Libreta BT21 A5", price: 5000, image: "Libreta Bt21.png", category: "Papelería", tags: ["libreta","bt21"], featured: true },
+    { id: "skz-hop", title: "STRAY KIDS – SKZHOP HIPTAPE (HOP)", price: 25000, image: "AlbumSkzHop.jpg", category: "K-pop", tags: ["stray kids","album"], featured: true },
+    { id: "lovelys", title: "Peluches Lovelys Twice Summer (Alternativos)", price: 4000, image: "Lovelys.JPG", category: "Peluches", tags: ["twice","peluche"], featured: false },
+  ];
+
+  // === RENDER DEL CATÁLOGO ===
+  const inputSearch = document.getElementById('search');
+  const selSort = document.getElementById('sort');
+  const grid = document.getElementById('grid');
+
+  function fmt(n){ return STORE.currency + n.toLocaleString('es-CL'); }
+
+  function cardHTML(p){
+    return `
+      <article class="hm-card overflow-hidden shadow-sm hover:shadow transition">
+        <img src="${p.image}" alt="${p.title}" class="w-full h-48 object-cover"/>
+        <div class="p-4 space-y-2 text-center">
+          <h3 class="font-semibold line-clamp-2">${p.title}</h3>
+          <div class="text-slate-600 text-sm">${p.category}</div>
+          <div class="font-bold">${fmt(p.price)}</div>
+          <button data-id="${p.id}" class="btn-add w-full px-4 py-2 rounded-xl text-white font-semibold" style="background:#5a479e">Añadir al carrito</button>
+        </div>
+      </article>`;
+  }
+
+  function emptyHTML(){
+    return `<div class="text-center text-slate-600 py-16">No encontramos productos 😿</div>`;
+  }
+
+  function renderProducts(){
+    const q = (inputSearch?.value || '').trim().toLowerCase();
+    let list = PRODUCTS.filter(p =>
+      !q || p.title.toLowerCase().includes(q) || (p.tags||[]).some(t => t.toLowerCase().includes(q))
+    );
+
+    switch (selSort?.value) {
+      case 'price_asc':  list.sort((a,b)=>a.price-b.price); break;
+      case 'price_desc': list.sort((a,b)=>b.price-a.price); break;
+      case 'az':         list.sort((a,b)=>a.title.localeCompare(b.title)); break;
+      default:           list.sort((a,b)=>Number(b.featured)-Number(a.featured));
+    }
+
+    grid.innerHTML = list.length ? list.map(cardHTML).join('') : emptyHTML();
+
+    // botones añadir
+    grid.querySelectorAll('.btn-add').forEach(btn=>{
+      btn.onclick = ()=>{
+        alert('Esto confirma que el render funciona. Luego conectamos el carrito 🛒');
+      };
+    });
+  }
+
+  // Inicializar
+  renderProducts();
+  inputSearch?.addEventListener('input', renderProducts);
+  selSort?.addEventListener('input', renderProducts);
+</script>
+
 <style>
 /* Identidad Happy Maydem – pasteles + Comic Sans */
 :root{
