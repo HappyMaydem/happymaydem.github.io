@@ -154,11 +154,13 @@
     function getProducts(){
       let list = [...ALL_PRODUCTS];
 
+      // Filtro por categoría (solo se usa si interceptas el menú con data-cat y href="#")
       if (ACTIVE_CATEGORY){
         const wanted = slug(ACTIVE_CATEGORY);
         list = list.filter(p => slug(p.category) === wanted);
       }
 
+      // Búsqueda
       const q = (inputSearch?.value || '').trim().toLowerCase();
       if (q){
         const qn = slug(q);
@@ -168,14 +170,20 @@
         );
       }
 
+      // Orden
       switch (selSort?.value) {
         case 'price_asc':  list.sort((a,b)=>a.price-b.price); break;
         case 'price_desc': list.sort((a,b)=>b.price-a.price); break;
         case 'az':         list.sort((a,b)=>a.title.localeCompare(b.title)); break;
-        default:           list.sort((a,b)=>Number(b.featured)-Number(a.featured));
+        default:           list.sort((a,b)=>Number(b.featured)-Number(a.featured)); // destacados primero
       }
 
-      if (!ACTIVE_CATEGORY && !q) list = list.filter(p => p.featured).slice(0, HOME_MAX);
+      // HOME: prioriza destacados pero RELLENA con el resto hasta HOME_MAX
+      if (!ACTIVE_CATEGORY && !q) {
+        const featured = list.filter(p => p.featured);
+        const non = list.filter(p => !p.featured);
+        list = [...featured, ...non].slice(0, HOME_MAX);
+      }
 
       return list;
     }
@@ -191,7 +199,7 @@
       });
     }
 
-    // Menú: solo intercepto si el link es "#", si tiene href a otra página, dejo navegar.
+    // Menú: solo intercepto si el link es "#"
     document.querySelectorAll('nav [data-cat]').forEach(a=>{
       a.addEventListener('click', (e)=>{
         const href = a.getAttribute('href');
